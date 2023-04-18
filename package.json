@@ -1,0 +1,7 @@
+{
+  "name": "api-dinner-delivery",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kaio Moreira",
+  "license": "MIT"
+}
