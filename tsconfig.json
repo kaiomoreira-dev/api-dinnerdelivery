@@ -5,18 +5,18 @@
     "outDir": "./dist",                           
     "target": "es2017",                                              
     "module": "commonjs",   
-    // "paths": {
-    //   "@modules/*": ["modules/*"],
-    //   "@shared/*": ["shared/*"],
-    //   "@errors/*": ["errors/*"],
-    //   "@config/*": ["config/*"],
-    //   "@utils/*": ["utils/*"]
-    // },                                                   
+    "paths": {
+      "@modules/*": ["modules/*"],
+      "@shared/*": ["shared/*"],
+      "@errors/*": ["errors/*"],
+      "@config/*": ["config/*"],
+      "@utils/*": ["utils/*"]
+    },                                                   
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,                  
+    "resolveJsonModule": true                     
   }
 }
