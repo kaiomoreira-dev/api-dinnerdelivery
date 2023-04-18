@@ -4,6 +4,7 @@
   "main": "index.js",
   "author": "Kaio Moreira",
   "license": "MIT",
+  "type":"module",
   "dependencies": {
     "express": "^4.18.2"
   },
