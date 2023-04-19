@@ -5,10 +5,10 @@
   "author": "Kaio Moreira",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
+    "start": "ts-node-dev -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --respawn dist/shared/infra/http/server.js",
     "migration:create": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:create",
-    "migration:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d src/shared/infra/typeorm/index.ts",
-    "migration:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:revert -d src/shared/infra/typeorm/index.ts",
+    "migration:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d dist/shared/infra/typeorm/index.js",
+    "migration:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:revert -d dist/shared/infra/typeorm/index.js",
     "prod": "ts-node-dev dist/server.js",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files"
   },
