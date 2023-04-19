@@ -40,12 +40,14 @@ $ cd api-dinner-delivery
 # Instale as dependências
 $ yarn ou npm install
 
+# Constuir o aplicação
+$ yarn build ou npm run build
 
 # Exutar apenas o container do postgres
 $ docker-compose up -d
 
 # Rodar as mirgations do banco
-$ yarn migrations:run
+$ yarn migration:run
 
 ## Iniciar aplicação
 // desenvolvimento
@@ -53,9 +55,6 @@ $ yarn dev ou npm run dev
 
 // teste
 $ yarn test ou npm run test
-
-// build
-$ yarn build ou npm run build
 
 # O servidor inciará na porta:3200 - acesse <http://localhost:3200>
 
