@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --respawn server.ts",
-    "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli",
-    "migration": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d dist/shared/infra/typeorm/index.js",    
+    "migration:create": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:create",
+    "migration:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d src/shared/infra/typeorm/index.ts",    
     "prod": "ts-node-dev dist/server.js",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files"
   },
