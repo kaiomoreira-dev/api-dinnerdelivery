@@ -1,3 +1,4 @@
+import { Users } from "@modules/accounts/infra/typeorm/entities/Users";
 import { DataSource } from "typeorm";
 
 import { CreateUsers1681917942698 } from "./migrations/1681917942698-CreateUsers";
@@ -11,7 +12,7 @@ const dataSource = new DataSource({
     process.env.NODE_ENV === "test" ? "dinnerDelivery_test" : "dinnerDelivery",
 
   // importar entidades ex: [Recipes]
-  entities: [],
+  entities: [Users],
   // importar migrations ex: [CreateRecipes102348998]
   migrations: [CreateUsers1681917942698],
 });
