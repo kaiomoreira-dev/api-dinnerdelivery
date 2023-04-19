@@ -3,7 +3,7 @@ version: "3.9"
 services:
     database:
       image: postgres
-      container_name: database-culinary-recipes
+      container_name: database-dinnerDelivery
       restart: always
       ports: 
         - 1999:5432
