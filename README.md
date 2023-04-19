@@ -40,18 +40,18 @@ $ cd api-dinner-delivery
 # Instale as dependências
 $ yarn ou npm install
 
-# Constuir o aplicação
-$ yarn build ou npm run build
-
 # Exutar apenas o container do postgres
 $ docker-compose up -d
+
+# Constuir o aplicação
+$ yarn build ou npm run build
 
 # Rodar as mirgations do banco
 $ yarn migration:run
 
 ## Iniciar aplicação
 // desenvolvimento
-$ yarn dev ou npm run dev
+$ yarn start ou npm run dev
 
 // teste
 $ yarn test ou npm run test
