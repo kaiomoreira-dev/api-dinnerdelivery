@@ -4,7 +4,7 @@
 - [Summary](#summary)
 - [Intro](#intro)
 - [Description](#description)
-- [Pré-requisitos](#pré-requisitos)
+- [System Requirements](#system-requirements)
 - [Project access](#project-access)
   - [Open \&\& Run](#open--run)
 
@@ -15,7 +15,7 @@
 * A plataforma DinnerDelivery foi criada com o objetivo de oferecer uma solução completa e eficiente para lanchonetes e restaurantes que desejam expandir seus negócios e melhorar a experiência dos clientes. Com a API REST do DinnerDelivery, é possível integrar um sistema de pedidos online diretamente ao site da lanchonete ou restaurante, permitindo que os clientes realizem pedidos de forma rápida, fácil e segura. 
 * Além disso, a plataforma DinnerDelivery oferece recursos avançados para o gerenciamento de pedidos, permitindo que os estabelecimentos acompanhem em tempo real todos os pedidos realizados e gerenciem de forma eficiente a produção e a entrega dos produtos. Tudo isso sem precisar investir em infraestrutura ou contratar desenvolvedores especializados em e-commerce.
 
-## Pré-requisitos
+## System Requirements
 * Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 [Node.js](https://nodejs.org/en/). 
 E o banco de dados Postgres:
