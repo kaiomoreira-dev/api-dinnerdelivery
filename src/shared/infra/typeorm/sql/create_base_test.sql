@@ -1,2 +1,2 @@
 -- Create base deliveryDinner para teste
-Create database dinnerDelivery_test;
+Create database dinnerdelivery_test;
