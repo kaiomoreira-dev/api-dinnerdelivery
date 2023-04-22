@@ -9,7 +9,7 @@ const dataSource = new DataSource({
   username: "docker",
   password: "YWfv44186uG6oBetxJC7sOAxJttd6aLe0zpmb_xdwpQ",
   database:
-    process.env.NODE_ENV === "test" ? "dinnerDelivery_test" : "dinnerDelivery",
+    process.env.NODE_ENV === "test" ? "dinnerdelivery_test" : "dinnerDelivery",
 
   // importar entidades ex: [Recipes]
   entities: [Users],
