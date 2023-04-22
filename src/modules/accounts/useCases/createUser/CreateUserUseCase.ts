@@ -20,14 +20,26 @@ export class CreateUserUseCase {
         password,
         address,
     }: ICreateUserDTO): Promise<Users> {
+        if (password.length < 6) {
+            throw new AppError("Password low lenght", 401);
+        }
+
         const passwordHash = await hash(password, 8);
+
+        if (!address) {
+            throw new AppError("Address is required", 401);
+        }
 
         const checkEmailUserExist = await this.userRepository.findByEmail(
             email
         );
 
         if (checkEmailUserExist) {
-            throw new AppError("Email already exists!");
+            throw new AppError("Email already exists", 401);
+        }
+
+        if (name.length < 6) {
+            throw new AppError("Name is not available", 401);
         }
 
         const user = await this.userRepository.create({
