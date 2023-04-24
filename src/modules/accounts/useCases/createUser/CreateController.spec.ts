@@ -35,7 +35,7 @@ describe("Create User Controller", () => {
         expect(createUser.status).toBe(201);
     });
 
-    it("should not be able to create user with leght name less than 6 characters", async () => {
+    it("should not be able to create user with leght name less than 6 characters or equall zero", async () => {
         const createUser = await request(app)
             .post("/users")
             .send({
@@ -74,7 +74,7 @@ describe("Create User Controller", () => {
         expect(createUser2.status).toBe(401);
     });
 
-    it("should not be able to create user with password less than lenght 6 characters", async () => {
+    it("should not be able to create user with password less than lenght 6 characters or equall zero", async () => {
         const createUser = await request(app)
             .post("/users")
             .send({
@@ -97,6 +97,20 @@ describe("Create User Controller", () => {
                 email: faker.internet.email(),
                 password: faker.internet.password(10),
                 address: "",
+            });
+
+        expect(createUser.status).toBe(401);
+    });
+
+    it("should not be able to create a user without email field empty", async () => {
+        const createUser = await request(app)
+            .post("/users")
+            .send({
+                id: faker.datatype.uuid(),
+                name: faker.name.fullName(),
+                email: "",
+                password: faker.internet.password(10),
+                address: faker.address.streetAddress(),
             });
 
         expect(createUser.status).toBe(401);
