@@ -5,6 +5,8 @@ import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
+import "dotenv/config";
+
 import { AppError } from "@shared/errors/AppError";
 
 interface IRequest {
