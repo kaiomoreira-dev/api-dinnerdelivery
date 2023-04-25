@@ -25,7 +25,6 @@ export class UsersRepositoryInMemory implements IUsersRepository {
             password,
             address,
         });
-
         this.repository.push(user);
 
         return user;
