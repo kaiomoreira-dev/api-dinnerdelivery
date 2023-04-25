@@ -4,23 +4,31 @@ import { redisClient } from "@config/redisClient";
 import "dotenv/config";
 import { faker } from "@faker-js/faker";
 import { ICreateUserDTO } from "@modules/accounts/dtos/CreateUserDTO";
-import { UserRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
+import { RefreshTokensRepositoryInMemory } from "@modules/accounts/repositories/in-memory/RefreshTokensRepositoryInMemory";
+import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersRepositoryInMemory";
 
+import { DayjsDateProvider } from "@shared/container/providers/DateProvider/implementations/DayjsDateProvider";
 import { AppError } from "@shared/errors/AppError";
 
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase";
 
-let userRepositoryInMemory: UserRepositoryInMemory;
+let usersRepositoryInMemory: UsersRepositoryInMemory;
 let createUserUseCase: CreateUserUseCase;
 let authenticateUserUseCase: AuthenticateUserUseCase;
+let dayjsDateProvider: DayjsDateProvider;
+let refreshTokensRepositoryInMemory: RefreshTokensRepositoryInMemory;
 
 describe("Authenticate User UseCase", () => {
     beforeEach(() => {
-        userRepositoryInMemory = new UserRepositoryInMemory();
-        createUserUseCase = new CreateUserUseCase(userRepositoryInMemory);
+        usersRepositoryInMemory = new UsersRepositoryInMemory();
+        createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory);
+        dayjsDateProvider = new DayjsDateProvider();
+        refreshTokensRepositoryInMemory = new RefreshTokensRepositoryInMemory();
         authenticateUserUseCase = new AuthenticateUserUseCase(
-            userRepositoryInMemory
+            usersRepositoryInMemory,
+            refreshTokensRepositoryInMemory,
+            dayjsDateProvider
         );
     });
 
