@@ -16,11 +16,16 @@ export class UsersRepository implements IUsersRepository {
     async updateById(
         id: string,
         name: string,
-        addres: string,
+        address: string,
         email: string,
         password: string
     ): Promise<void> {
-        throw new Error("Method not implemented.");
+        await this.repository
+            .createQueryBuilder()
+            .update()
+            .set({ name, address, email, password })
+            .where("id = :id", { id })
+            .execute();
     }
     async deleteById(id: string): Promise<void> {
         await this.repository.delete({ id });
