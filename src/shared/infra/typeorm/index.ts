@@ -1,7 +1,9 @@
+import { RefreshTokens } from "@modules/accounts/infra/typeorm/entities/RefreshTokens";
 import { Users } from "@modules/accounts/infra/typeorm/entities/Users";
 import { DataSource } from "typeorm";
 
 import { CreateUsers1681917942698 } from "./migrations/1681917942698-CreateUsers";
+import { CreateRefreshToken1682435280583 } from "./migrations/1682435280583-CreateRefreshToken";
 
 const dataSource = new DataSource({
   type: "postgres",
@@ -12,9 +14,9 @@ const dataSource = new DataSource({
     process.env.NODE_ENV === "test" ? "dinnerdelivery_test" : "dinnerDelivery",
 
   // importar entidades ex: [Recipes]
-  entities: [Users],
+  entities: [Users, RefreshTokens],
   // importar migrations ex: [CreateRecipes102348998]
-  migrations: [CreateUsers1681917942698],
+  migrations: [CreateUsers1681917942698, CreateRefreshToken1682435280583],
 });
 
 export function createConnection(host = "localhost"): Promise<DataSource> {
