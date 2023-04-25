@@ -3,18 +3,18 @@
 import { redisClient } from "@config/redisClient";
 import { faker } from "@faker-js/faker";
 import { ICreateUserDTO } from "@modules/accounts/dtos/CreateUserDTO";
-import { UserRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
+import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersRepositoryInMemory";
 
 import { AppError } from "@shared/errors/AppError";
 
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
-let userRepositoryInMemory: UserRepositoryInMemory;
+let userRepositoryInMemory: UsersRepositoryInMemory;
 let createUserUseCase: CreateUserUseCase;
 
 describe("Create User UseCase", () => {
     beforeEach(() => {
-        userRepositoryInMemory = new UserRepositoryInMemory();
+        userRepositoryInMemory = new UsersRepositoryInMemory();
         createUserUseCase = new CreateUserUseCase(userRepositoryInMemory);
     });
 
@@ -32,7 +32,6 @@ describe("Create User UseCase", () => {
         };
 
         const createUser = await createUserUseCase.execute(user);
-
         expect(createUser).toHaveProperty("id");
     });
 
