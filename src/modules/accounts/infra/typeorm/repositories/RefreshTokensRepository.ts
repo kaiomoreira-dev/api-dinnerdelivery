@@ -13,11 +13,13 @@ export class RefreshTokensRepository implements IRefreshTokensRepository {
         this.repository = dataSource.getRepository(RefreshTokens);
     }
     async create({
+        id,
         id_users,
         expire_date,
         refresh_token,
     }: IRefreshTokensDTO): Promise<RefreshTokens> {
         const createRefreshTokensUser = this.repository.create({
+            id,
             id_users,
             expire_date,
             refresh_token,
