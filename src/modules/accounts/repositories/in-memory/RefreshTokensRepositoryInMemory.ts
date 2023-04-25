@@ -9,6 +9,7 @@ export class RefreshTokensRepositoryInMemory
     private usersTokens: RefreshTokens[] = [];
 
     async create({
+        id,
         refresh_token,
         expire_date,
         id_users,
@@ -16,6 +17,7 @@ export class RefreshTokensRepositoryInMemory
         const refreshToken = new RefreshTokens();
 
         Object.assign(refreshToken, {
+            id,
             refresh_token,
             expire_date,
             id_users,
