@@ -25,7 +25,6 @@ export async function ensureAuthenticate(
   // verificar no verify o token
   // retirar de dentro do verify o id do user que esta no token
   try {
-    console.log(token);
     const { sub: user_id } = verify(token, auth.secret_token) as IPayload;
 
     // depois pesquisar em um método findbyid que vamos criar
