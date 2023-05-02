@@ -20,6 +20,7 @@ export class CreateUserUseCase {
         email,
         password,
         address,
+        admin,
     }: ICreateUserDTO): Promise<Users> {
         if (password.length < 6 || password.length === 0) {
             throw new AppError("Password low lenght", 401);
@@ -53,6 +54,7 @@ export class CreateUserUseCase {
             email,
             password: passwordHash,
             address,
+            admin,
         });
 
         return user;
