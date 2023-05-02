@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { RefreshTokens } from "@modules/accounts/infra/typeorm/entities/RefreshTokens";
 import { Users } from "@modules/accounts/infra/typeorm/entities/Users";
 import { Products } from "@modules/products/infra/typeorm/entities/Products";
