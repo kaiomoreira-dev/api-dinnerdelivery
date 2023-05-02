@@ -24,9 +24,6 @@ jobs:
       - name: Run Migrations
         run: yarn migration:run
 
-      - name: Seed create user admin
-        run: yarn seed
-
       - name: Run Tests
         run: yarn test
               
