@@ -24,7 +24,7 @@ describe("Create Product Controller", () => {
         connection.query(
             `
         INSERT INTO users(id, name, password, email, address, "isAdmin", created_at, updated_at)
-        values('${id}', 'user test', '${password}', '${email}', 'rua test 66 99999', true, 'now()', 'now()')
+        values('${id}', 'user test', '${password}', '${email}', 'rua test 66 99999', false, 'now()', 'now()')
         `
         );
     });
