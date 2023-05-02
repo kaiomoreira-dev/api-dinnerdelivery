@@ -8,7 +8,7 @@ async function create() {
   const connection: DataSource = await createConnection("localhost");
 
   const id = uuidv4();
-  const email = "useradmin@admin.com";
+  const email = "admin@admin.com";
   const password = await hash("adminAdmin@!", 8);
 
   connection.query(
