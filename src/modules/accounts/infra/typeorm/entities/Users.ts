@@ -26,7 +26,7 @@ export class Users {
     address: string;
 
     @Column()
-    isAdmin: boolean;
+    admin: boolean;
 
     @CreateDateColumn()
     created_at: Date;
