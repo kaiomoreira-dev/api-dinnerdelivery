@@ -18,13 +18,13 @@ describe("Create Product Controller", () => {
         await connection.runMigrations();
 
         const id = uuidv4();
-        const email = "usertest@test.com";
+        const email = "useradmin@test.com";
         const password = await hash("userTest@!", 8);
 
         connection.query(
             `
-        INSERT INTO users(id, name, password, email, address, "isAdmin", created_at, updated_at)
-        values('${id}', 'user test', '${password}', '${email}', 'rua test 66 99999', false, 'now()', 'now()')
+        INSERT INTO users(id, name, password, email, address, "admin", created_at, updated_at)
+        values('${id}', 'user test', '${password}', '${email}', 'rua test 66 99999', true, 'now()', 'now()')
         `
         );
     });
@@ -37,7 +37,7 @@ describe("Create Product Controller", () => {
 
     it("should be able to create a product", async () => {
         const authenticateUser = await request(app).post("/sessions").send({
-            email: "usertest@test.com",
+            email: "useradmin@test.com",
             password: "userTest@!",
         });
 
@@ -59,7 +59,7 @@ describe("Create Product Controller", () => {
 
     it("should not be able to create product with name already exists", async () => {
         const authenticateUser = await request(app).post("/sessions").send({
-            email: "usertest@test.com",
+            email: "useradmin@test.com",
             password: "userTest@!",
         });
 
@@ -92,7 +92,7 @@ describe("Create Product Controller", () => {
 
     it("should not be able to create product with quantity less than or equal to zero", async () => {
         const authenticateUser = await request(app).post("/sessions").send({
-            email: "usertest@test.com",
+            email: "useradmin@test.com",
             password: "userTest@!",
         });
 
@@ -114,7 +114,7 @@ describe("Create Product Controller", () => {
 
     it("should not be able to create product with unit_price less than or equal to zero", async () => {
         const authenticateUser = await request(app).post("/sessions").send({
-            email: "usertest@test.com",
+            email: "useradmin@test.com",
             password: "userTest@!",
         });
 
@@ -136,7 +136,7 @@ describe("Create Product Controller", () => {
 
     it("should not be able to create product with description less than to 6 characters", async () => {
         const authenticateUser = await request(app).post("/sessions").send({
-            email: "usertest@test.com",
+            email: "useradmin@test.com",
             password: "userTest@!",
         });
 
