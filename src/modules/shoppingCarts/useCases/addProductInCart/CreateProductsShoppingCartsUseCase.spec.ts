@@ -66,7 +66,7 @@ describe("Add product in cart UseCase", () => {
             admin: true,
         };
 
-        // Create a user
+        // Create a userr
         await createUserUseCase.execute(user);
 
         // Authenticate a user
