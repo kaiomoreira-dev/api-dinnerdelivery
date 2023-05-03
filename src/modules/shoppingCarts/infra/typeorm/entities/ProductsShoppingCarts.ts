@@ -17,7 +17,7 @@ export class ProductsShoppingCarts {
     id_products: string;
 
     @PrimaryColumn()
-    id_shoppingCarts: string;
+    id_shoppingCarts?: string;
 
     @Column()
     unit_price: number;
@@ -27,11 +27,11 @@ export class ProductsShoppingCarts {
 
     @ManyToOne(() => ShoppingCarts, (shoppingCarts) => shoppingCarts.id)
     @JoinColumn({ name: "id_shoppingCarts" })
-    shoppingCarts: ShoppingCarts;
+    shoppingCarts?: ShoppingCarts;
 
     @ManyToOne(() => Products, (product) => product.id)
     @JoinColumn({ name: "id_products" })
-    products: Products;
+    products?: Products;
 
     @CreateDateColumn()
     created_at: Date;
