@@ -9,7 +9,7 @@ import { createConnection } from "@shared/infra/typeorm";
 
 let connection: DataSource;
 
-describe("Authenticate User Controller", () => {
+describe("Refresh token Controller", () => {
     beforeAll(async () => {
         connection = await createConnection("localhost");
 
