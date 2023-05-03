@@ -58,6 +58,10 @@ export class CreateProductsShoppingCartsUseCase {
             throw new AppError("Product is not found", 404);
         }
 
+        if (quantity <= 0 || !quantity) {
+            throw new AppError("Quantity is not valid", 401);
+        }
+
         const subtotal = foundProducts.unit_price * quantity;
         const productExistInShoppingCart =
             await this.productsShoppingCartsRepository.findProductInShoppingCart(
