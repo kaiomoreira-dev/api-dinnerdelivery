@@ -39,10 +39,6 @@ export class CreateProductsUseCase {
             throw new AppError("Price unit is not valid", 401);
         }
 
-        if (description.length < 6 || !description) {
-            throw new AppError("Description is not valid", 401);
-        }
-
         const product = await this.productsRepository.create({
             id,
             name,
