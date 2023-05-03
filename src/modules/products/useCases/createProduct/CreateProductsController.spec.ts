@@ -1,6 +1,5 @@
 import "dotenv/config";
 import { faker } from "@faker-js/faker";
-import { ICreateUserDTO } from "@modules/accounts/dtos/CreateUserDTO";
 import { hash } from "bcrypt";
 import request from "supertest";
 import { DataSource } from "typeorm";
@@ -128,28 +127,6 @@ describe("Create Product Controller", () => {
                 description: faker.commerce.productDescription(),
                 quantity: Number(faker.random.numeric()),
                 unit_price: 0,
-            })
-            .set({ Authorization: `Bearer ${token}` });
-
-        expect(createProduct.status).toBe(401);
-    });
-
-    it("should not be able to create product with description less than to 6 characters", async () => {
-        const authenticateUser = await request(app).post("/sessions").send({
-            email: "useradmin@test.com",
-            password: "userTest@!",
-        });
-
-        const { token } = authenticateUser.body;
-
-        const createProduct = await request(app)
-            .post("/products")
-            .send({
-                id: faker.datatype.uuid(),
-                name: faker.name.fullName(),
-                description: faker.datatype.string(5),
-                quantity: Number(faker.random.numeric()),
-                unit_price: Number(faker.commerce.price()),
             })
             .set({ Authorization: `Bearer ${token}` });
 

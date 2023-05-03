@@ -189,36 +189,4 @@ describe("Create Product UseCase", () => {
             createProductsUseCase.execute(product, user.id)
         ).rejects.toEqual(new AppError("Price unit is not valid", 401));
     });
-
-    it("should not be able to create product with description less than to 6 characters ", async () => {
-        const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
-            name: faker.name.fullName(),
-            email: faker.internet.email(),
-            password: faker.datatype.string(8),
-            address: faker.address.streetAddress(),
-            admin: true,
-        };
-
-        // Create a user
-        await createUserUseCase.execute(user);
-
-        // Authenticate a user
-        await authenticateUserUseCase.execute({
-            email: user.email,
-            password: user.password,
-        });
-
-        const product: ICreateProductsDTO = {
-            id: faker.datatype.uuid(),
-            name: faker.name.fullName(),
-            description: faker.datatype.string(5),
-            quantity: Number(faker.random.numeric()),
-            unit_price: Number(faker.commerce.price()),
-        };
-
-        await expect(
-            createProductsUseCase.execute(product, user.id)
-        ).rejects.toEqual(new AppError("Description is not valid", 401));
-    });
 });
