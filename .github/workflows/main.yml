@@ -45,6 +45,6 @@ jobs:
             key: ${{ secrets.SSH_KEY }}
             script: |
               cd ~/app/api-dinner-delivery
-              npm install
-              npm migration:run
+              yarn
+              yarn migration:run
               pm2 restart dinnerDelivery
