@@ -7,12 +7,14 @@ import { CreateUserUseCase } from "@modules/accounts/useCases/createUser/CreateU
 import { ICreateProductsDTO } from "@modules/products/dtos/ICreateProductsDTO";
 import { ProductsRepositoryInMemory } from "@modules/products/repositories/in-memory/ProductsRepositoryInMemory";
 import { CreateProductsUseCase } from "@modules/products/useCases/createProduct/CreateProductsUseCase";
+import { ICreateShoppingCartsDTO } from "@modules/shoppingCarts/dtos/ICreateShoppingCartsDTO";
 import { ProductsShoppingCartsRepositoryInMemory } from "@modules/shoppingCarts/repositories/in-memory/ProductsShoppingCartsRepositoryInMemory";
 import { ShoppingCartsRepositoryInMemory } from "@modules/shoppingCarts/repositories/in-memory/ShoppingCartsRepositoryInMemory";
 
 import { DayjsDateProvider } from "@shared/container/providers/DateProvider/implementations/DayjsDateProvider";
 import { AppError } from "@shared/errors/AppError";
 
+import { CreateShoppingCartUseCase } from "../createShoppingCart/CreateShoppingCartUseCase";
 import { CreateProductsShoppingCartsUseCase } from "./CreateProductsShoppingCartsUseCase";
 
 let usersRepositoryInMemory: UsersRepositoryInMemory;
@@ -25,6 +27,7 @@ let createProductsUseCase: CreateProductsUseCase;
 let shoppingCartsRepositoryInMemory: ShoppingCartsRepositoryInMemory;
 let productsShoppingCartsRepositoryInMemory: ProductsShoppingCartsRepositoryInMemory;
 let createProductsShoppingCartsUseCase: CreateProductsShoppingCartsUseCase;
+let createShoppingCartUseCase: CreateShoppingCartUseCase;
 
 describe("Add product in cart UseCase", () => {
     beforeEach(() => {
@@ -33,6 +36,9 @@ describe("Add product in cart UseCase", () => {
         createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory);
         dayjsDateProvider = new DayjsDateProvider();
         refreshTokensRepositoryInMemory = new RefreshTokensRepositoryInMemory();
+        createShoppingCartUseCase = new CreateShoppingCartUseCase(
+            shoppingCartsRepositoryInMemory
+        );
         authenticateUserUseCase = new AuthenticateUserUseCase(
             usersRepositoryInMemory,
             refreshTokensRepositoryInMemory,
@@ -88,17 +94,9 @@ describe("Add product in cart UseCase", () => {
             user.id
         );
 
-        const createdCart = await shoppingCartsRepositoryInMemory.create({
-            id: faker.datatype.uuid(),
-            id_users: null,
-            subtotal: 0,
-            products: [],
-        });
-
         const addProductInCart =
             await createProductsShoppingCartsUseCase.execute({
                 id_products: createdProduct.id,
-                id_shoppingCarts: createdCart.id,
                 quantity: 5,
             });
 
@@ -140,29 +138,22 @@ describe("Add product in cart UseCase", () => {
             user.id
         );
 
-        const createdCart = await shoppingCartsRepositoryInMemory.create({
-            id: faker.datatype.uuid(),
-            id_users: null,
-            subtotal: 0,
-            products: [],
-        });
-
         // create produto in cart
-        await createProductsShoppingCartsUseCase.execute({
+        const shoppingCart = await createProductsShoppingCartsUseCase.execute({
             id_products: createdProduct.id,
-            id_shoppingCarts: createdCart.id,
-            quantity: 5,
+            quantity: 6,
         });
+        console.log(JSON.stringify(shoppingCart, null, 2));
 
         // update produto in cart
         const updateProductInCart =
             await createProductsShoppingCartsUseCase.execute({
                 id_products: createdProduct.id,
-                id_shoppingCarts: createdCart.id,
-                quantity: 5,
+                id_shoppingCarts: shoppingCart.shoppingCart.id,
+                quantity: 3,
             });
 
-        // console.log(JSON.stringify(updateProductInCart, null, 2));
+        console.log(JSON.stringify(updateProductInCart, null, 2));
 
         expect(updateProductInCart.shoppingCart).toHaveProperty("id");
         expect(updateProductInCart.shoppingCart.products[0]).toHaveProperty(
