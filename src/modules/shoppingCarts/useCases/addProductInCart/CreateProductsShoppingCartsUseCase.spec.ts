@@ -7,7 +7,6 @@ import { CreateUserUseCase } from "@modules/accounts/useCases/createUser/CreateU
 import { ICreateProductsDTO } from "@modules/products/dtos/ICreateProductsDTO";
 import { ProductsRepositoryInMemory } from "@modules/products/repositories/in-memory/ProductsRepositoryInMemory";
 import { CreateProductsUseCase } from "@modules/products/useCases/createProduct/CreateProductsUseCase";
-import { ICreateShoppingCartsDTO } from "@modules/shoppingCarts/dtos/ICreateShoppingCartsDTO";
 import { ProductsShoppingCartsRepositoryInMemory } from "@modules/shoppingCarts/repositories/in-memory/ProductsShoppingCartsRepositoryInMemory";
 import { ShoppingCartsRepositoryInMemory } from "@modules/shoppingCarts/repositories/in-memory/ShoppingCartsRepositoryInMemory";
 
