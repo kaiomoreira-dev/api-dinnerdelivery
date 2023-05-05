@@ -13,7 +13,6 @@ import { ShoppingCartsRepositoryInMemory } from "@modules/shoppingCarts/reposito
 import { DayjsDateProvider } from "@shared/container/providers/DateProvider/implementations/DayjsDateProvider";
 import { AppError } from "@shared/errors/AppError";
 
-import { CreateShoppingCartUseCase } from "../createShoppingCart/CreateShoppingCartUseCase";
 import { CreateProductsShoppingCartsUseCase } from "./CreateProductsShoppingCartsUseCase";
 
 let usersRepositoryInMemory: UsersRepositoryInMemory;
@@ -26,7 +25,6 @@ let createProductsUseCase: CreateProductsUseCase;
 let shoppingCartsRepositoryInMemory: ShoppingCartsRepositoryInMemory;
 let productsShoppingCartsRepositoryInMemory: ProductsShoppingCartsRepositoryInMemory;
 let createProductsShoppingCartsUseCase: CreateProductsShoppingCartsUseCase;
-let createShoppingCartUseCase: CreateShoppingCartUseCase;
 
 describe("Add product in cart UseCase", () => {
     beforeEach(() => {
@@ -35,9 +33,7 @@ describe("Add product in cart UseCase", () => {
         createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory);
         dayjsDateProvider = new DayjsDateProvider();
         refreshTokensRepositoryInMemory = new RefreshTokensRepositoryInMemory();
-        createShoppingCartUseCase = new CreateShoppingCartUseCase(
-            shoppingCartsRepositoryInMemory
-        );
+
         authenticateUserUseCase = new AuthenticateUserUseCase(
             usersRepositoryInMemory,
             refreshTokensRepositoryInMemory,
