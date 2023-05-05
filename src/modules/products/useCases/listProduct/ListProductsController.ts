@@ -1,4 +1,3 @@
-import { CreateOrderUseCase } from "@modules/orders/useCases/createOrder/CreateOrderUseCase";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 
