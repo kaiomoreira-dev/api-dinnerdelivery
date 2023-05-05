@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable prefer-const */
@@ -6,6 +7,7 @@ import { Products } from "@modules/products/infra/typeorm/entities/Products";
 import { IProductsRepository } from "@modules/products/repositories/IProductsRepository";
 import { ICreateProductsShoppingCartsDTO } from "@modules/shoppingCarts/dtos/ICreateProductsShoppingCartsDTO";
 import { ProductsShoppingCarts } from "@modules/shoppingCarts/infra/typeorm/entities/ProductsShoppingCarts";
+import { ShoppingCarts } from "@modules/shoppingCarts/infra/typeorm/entities/ShoppingCarts";
 import { IProductsShoppingCartsRepository } from "@modules/shoppingCarts/repositories/IProductsShoppingCartsRepository";
 import { IShoppingCartsRepository } from "@modules/shoppingCarts/repositories/IShoppingCartsRepository";
 import { inject, injectable } from "tsyringe";
@@ -42,14 +44,6 @@ export class CreateProductsShoppingCartsUseCase {
         let productInCart: ProductsShoppingCarts;
         let listProductsInCart: ProductsShoppingCarts[];
 
-        let shoppingCart = await this.shoppingCartsRepository.findById(
-            id_shoppingCarts
-        );
-
-        if (!shoppingCart) {
-            shoppingCart = await this.shoppingCartsRepository.create({});
-        }
-
         const foundProducts = await this.productsRepository.findById(
             id_products
         );
@@ -63,71 +57,87 @@ export class CreateProductsShoppingCartsUseCase {
         }
 
         const subtotal = foundProducts.unit_price * quantity;
-        const productExistInShoppingCart =
-            await this.productsShoppingCartsRepository.findProductInShoppingCart(
-                foundProducts.id,
-                shoppingCart.id
-            );
 
-        if (productExistInShoppingCart) {
-            shoppingCart.subtotal += subtotal;
-            productExistInShoppingCart.quantity += quantity;
+        if (id_shoppingCarts) {
+            try {
+                let shoppingCartExist =
+                    await this.shoppingCartsRepository.findById(
+                        id_shoppingCarts
+                    );
 
-            await this.shoppingCartsRepository.updateById(
-                shoppingCart.id,
-                shoppingCart.subtotal
-            );
+                if (shoppingCartExist) {
+                    const productExistInShoppingCart =
+                        await this.productsShoppingCartsRepository.findProductInShoppingCart(
+                            foundProducts.id,
+                            shoppingCartExist.id
+                        );
 
-            await this.productsShoppingCartsRepository.updateById(
-                shoppingCart.id,
-                foundProducts.id,
-                productExistInShoppingCart.quantity
-            );
+                    shoppingCartExist.subtotal += subtotal;
+                    productExistInShoppingCart.quantity += quantity;
 
-            listProductsInCart =
-                await this.productsShoppingCartsRepository.listProductsInShoppingCart(
-                    shoppingCart.id
-                );
+                    await this.shoppingCartsRepository.updateById(
+                        shoppingCartExist.id,
+                        shoppingCartExist.subtotal
+                    );
 
-            for (let productInCart of listProductsInCart) {
-                itemProduct.push({
-                    id: productInCart.products.id,
-                    name: productInCart.products.name,
-                    description: productInCart.products.description,
-                    unit_price: productInCart.unit_price,
-                    quantity: productInCart.quantity,
-                });
+                    await this.productsShoppingCartsRepository.updateById(
+                        shoppingCartExist.id,
+                        foundProducts.id,
+                        productExistInShoppingCart.quantity
+                    );
+
+                    listProductsInCart =
+                        await this.productsShoppingCartsRepository.listProductsInShoppingCart(
+                            shoppingCartExist.id
+                        );
+
+                    for (let productInCart of listProductsInCart) {
+                        itemProduct.push({
+                            id: productInCart.products.id,
+                            name: productInCart.products.name,
+                            description: productInCart.products.description,
+                            unit_price: productInCart.unit_price,
+                            quantity: productInCart.quantity,
+                        });
+                    }
+
+                    cartInfo = {
+                        shoppingCart: {
+                            id: shoppingCartExist.id,
+                            id_users: shoppingCartExist.id_users,
+                            subtotal: shoppingCartExist.subtotal,
+                            products: itemProduct,
+                        },
+                    };
+
+                    return cartInfo;
+                }
+            } catch (error) {
+                throw new AppError("ShoppingCart ID is not valid");
             }
-
-            cartInfo = {
-                shoppingCart: {
-                    id: shoppingCart.id,
-                    id_users: shoppingCart.id_users,
-                    subtotal: shoppingCart.subtotal,
-                    products: itemProduct,
-                },
-            };
-
-            return cartInfo;
         }
+
+        const createShoppingCart = await this.shoppingCartsRepository.create(
+            {}
+        );
 
         productInCart = await this.productsShoppingCartsRepository.create({
             id_products: foundProducts.id,
-            id_shoppingCarts: shoppingCart.id,
+            id_shoppingCarts: createShoppingCart.id,
             quantity,
             unit_price: foundProducts.unit_price,
         });
 
-        shoppingCart.subtotal += subtotal;
+        createShoppingCart.subtotal += subtotal;
 
         await this.shoppingCartsRepository.updateById(
-            shoppingCart.id,
-            shoppingCart.subtotal
+            createShoppingCart.id,
+            createShoppingCart.subtotal
         );
 
         listProductsInCart =
             await this.productsShoppingCartsRepository.listProductsInShoppingCart(
-                shoppingCart.id
+                createShoppingCart.id
             );
 
         for (let productInCart of listProductsInCart) {
@@ -142,9 +152,9 @@ export class CreateProductsShoppingCartsUseCase {
 
         cartInfo = {
             shoppingCart: {
-                id: shoppingCart.id,
-                id_users: shoppingCart.id_users,
-                subtotal: shoppingCart.subtotal,
+                id: createShoppingCart.id,
+                id_users: createShoppingCart.id_users,
+                subtotal: createShoppingCart.subtotal,
                 products: itemProduct,
             },
         };
