@@ -117,9 +117,10 @@ export class CreateProductsShoppingCartsUseCase {
             }
         }
 
-        const createShoppingCart = await this.shoppingCartsRepository.create(
-            {}
-        );
+        const createShoppingCart = await this.shoppingCartsRepository.create({
+            products: [],
+            subtotal: 0,
+        });
 
         productInCart = await this.productsShoppingCartsRepository.create({
             id_products: foundProducts.id,
