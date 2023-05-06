@@ -1,5 +1,8 @@
 import { CreateProductsController } from "@modules/products/useCases/createProduct/CreateProductsController";
+import { DeleteProductController } from "@modules/products/useCases/deleteProduct/DeleteProductController";
+import { FindProductByIdController } from "@modules/products/useCases/findProductById/FindProductByIdController";
 import { ListProductsController } from "@modules/products/useCases/listProduct/ListProductsController";
+import { UpdateProductController } from "@modules/products/useCases/updateProduct/UpdateProductController";
 import { Router } from "express";
 
 import { ensureAdmin } from "../middlewares/ensureAdmin";
@@ -11,6 +14,12 @@ const createProductsController = new CreateProductsController();
 
 const listProductsController = new ListProductsController();
 
+const findProductByIdController = new FindProductByIdController();
+
+const updateProductController = new UpdateProductController();
+
+const deleteProductController = new DeleteProductController();
+
 productRoutes.post(
   "/",
   ensureAuthenticate,
@@ -19,3 +28,24 @@ productRoutes.post(
 );
 
 productRoutes.get("/", listProductsController.handle);
+
+productRoutes.get(
+  "/:id",
+  ensureAuthenticate,
+  ensureAdmin,
+  findProductByIdController.handle
+);
+
+productRoutes.put(
+  "/:id",
+  ensureAuthenticate,
+  ensureAdmin,
+  updateProductController.handle
+);
+
+productRoutes.delete(
+  "/:id",
+  ensureAuthenticate,
+  ensureAdmin,
+  deleteProductController.handle
+);
