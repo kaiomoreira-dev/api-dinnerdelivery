@@ -57,9 +57,8 @@ describe("Add product in cart UseCase", () => {
             );
     });
 
-    it("should be able to add a product not exist in shopping cart", async () => {
+    it("should be able to add a product in shoppingCart anonymous", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -68,7 +67,7 @@ describe("Add product in cart UseCase", () => {
         };
 
         // Create a userr
-        await createUserUseCase.execute(user);
+        const createdUser = await createUserUseCase.execute(user);
 
         // Authenticate a user
         await authenticateUserUseCase.execute({
@@ -77,7 +76,6 @@ describe("Add product in cart UseCase", () => {
         });
 
         const product: ICreateProductsDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
             quantity: Number(faker.random.numeric()),
@@ -86,7 +84,7 @@ describe("Add product in cart UseCase", () => {
 
         const createdProduct = await createProductsUseCase.execute(
             product,
-            user.id
+            createdUser.id
         );
 
         const addProductInCart =
@@ -101,7 +99,7 @@ describe("Add product in cart UseCase", () => {
         expect(addProductInCart.shoppingCart.products[0]).toHaveProperty("id");
     });
 
-    it("should be able to update a product already exist in shopping cart", async () => {
+    it("should be able to update a product already exist in shopping cart anonymous", async () => {
         const user: ICreateUserDTO = {
             id: faker.datatype.uuid(),
             name: faker.name.fullName(),
@@ -112,7 +110,7 @@ describe("Add product in cart UseCase", () => {
         };
 
         // Create a user
-        await createUserUseCase.execute(user);
+        const createdUser = await createUserUseCase.execute(user);
 
         // Authenticate a user
         await authenticateUserUseCase.execute({
@@ -121,7 +119,6 @@ describe("Add product in cart UseCase", () => {
         });
 
         const product: ICreateProductsDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
             quantity: Number(faker.random.numeric()),
@@ -130,7 +127,7 @@ describe("Add product in cart UseCase", () => {
 
         const createdProduct = await createProductsUseCase.execute(
             product,
-            user.id
+            createdUser.id
         );
 
         // create produto in cart
@@ -138,7 +135,6 @@ describe("Add product in cart UseCase", () => {
             id_products: createdProduct.id,
             quantity: 6,
         });
-        console.log(JSON.stringify(shoppingCart, null, 2));
 
         // update produto in cart
         const updateProductInCart =
@@ -147,13 +143,51 @@ describe("Add product in cart UseCase", () => {
                 id_shoppingCarts: shoppingCart.shoppingCart.id,
                 quantity: 3,
             });
-
-        console.log(JSON.stringify(updateProductInCart, null, 2));
-
         expect(updateProductInCart.shoppingCart).toHaveProperty("id");
         expect(updateProductInCart.shoppingCart.products[0]).toHaveProperty(
             "id"
         );
+    });
+
+    it("should be able to update a product already exist in shopping cart with shoppingCart ID invalid anonymous", async () => {
+        const user: ICreateUserDTO = {
+            id: faker.datatype.uuid(),
+            name: faker.name.fullName(),
+            email: faker.internet.email(),
+            password: faker.datatype.string(8),
+            address: faker.address.streetAddress(),
+            admin: true,
+        };
+
+        // Create a user
+        const createdUser = await createUserUseCase.execute(user);
+
+        // Authenticate a user
+        await authenticateUserUseCase.execute({
+            email: user.email,
+            password: user.password,
+        });
+
+        const product: ICreateProductsDTO = {
+            name: faker.name.fullName(),
+            description: faker.commerce.productDescription(),
+            quantity: Number(faker.random.numeric()),
+            unit_price: 10,
+        };
+
+        const createdProduct = await createProductsUseCase.execute(
+            product,
+            createdUser.id
+        );
+
+        // update produto in cart
+        await expect(
+            createProductsShoppingCartsUseCase.execute({
+                id_products: createdProduct.id,
+                id_shoppingCarts: faker.datatype.uuid(),
+                quantity: 5,
+            })
+        ).rejects.toEqual(new AppError("ShoppingCart ID is not valid", 401));
     });
 
     it("should not be able to add a product to cart with invalid quantity", async () => {
@@ -167,7 +201,7 @@ describe("Add product in cart UseCase", () => {
         };
 
         // Create a user
-        await createUserUseCase.execute(user);
+        const createdUser = await createUserUseCase.execute(user);
 
         // Authenticate a user
         await authenticateUserUseCase.execute({
@@ -176,7 +210,6 @@ describe("Add product in cart UseCase", () => {
         });
 
         const product: ICreateProductsDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
             quantity: Number(faker.random.numeric()),
@@ -185,7 +218,7 @@ describe("Add product in cart UseCase", () => {
 
         const createdProduct = await createProductsUseCase.execute(
             product,
-            user.id
+            createdUser.id
         );
 
         const createdCart = await shoppingCartsRepositoryInMemory.create({
