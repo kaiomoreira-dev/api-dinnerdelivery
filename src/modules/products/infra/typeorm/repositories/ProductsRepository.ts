@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { ICreateProductsDTO } from "@modules/products/dtos/ICreateProductsDTO";
 import { IProductsRepository } from "@modules/products/repositories/IProductsRepository";
 import { Repository } from "typeorm";
@@ -33,21 +34,31 @@ export class ProductsRepository implements IProductsRepository {
         return product;
     }
     async list(): Promise<Products[]> {
-        return this.repository.find();
+        const products = await this.repository.find();
+
+        products.forEach((product: Products) => {
+            product.unit_price = Number(product.unit_price);
+        });
+
+        return products;
     }
     async findById(id: string): Promise<Products> {
-        return this.repository.findOneBy({ id });
+        const product = await this.repository.findOneBy({ id });
+
+        product.unit_price = Number(product.unit_price);
+
+        return product;
     }
     async findByName(name: string): Promise<Products> {
         return this.repository.findOneBy({ name });
     }
-    async updateById(
-        id: string,
-        name?: string,
-        description?: string,
-        quantity?: number,
-        unit_price?: number
-    ): Promise<void> {
+    async updateById({
+        id,
+        name,
+        description,
+        quantity,
+        unit_price,
+    }: ICreateProductsDTO): Promise<void> {
         await this.repository
             .createQueryBuilder()
             .update()
