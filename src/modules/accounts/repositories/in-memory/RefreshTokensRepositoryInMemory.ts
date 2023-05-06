@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+import { faker } from "@faker-js/faker";
 import { IRefreshTokensDTO } from "@modules/accounts/dtos/IRefreshTokensDTO";
 import { RefreshTokens } from "@modules/accounts/infra/typeorm/entities/RefreshTokens";
 
@@ -9,15 +11,16 @@ export class RefreshTokensRepositoryInMemory
     private usersTokens: RefreshTokens[] = [];
 
     async create({
-        id,
         refresh_token,
         expire_date,
         id_users,
     }: IRefreshTokensDTO): Promise<RefreshTokens> {
         const refreshToken = new RefreshTokens();
 
+        const generateID = faker.datatype.uuid();
+
         Object.assign(refreshToken, {
-            id,
+            id: generateID,
             refresh_token,
             expire_date,
             id_users,

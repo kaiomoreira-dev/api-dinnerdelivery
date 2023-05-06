@@ -47,7 +47,6 @@ describe("Create Product UseCase", () => {
 
     it("should be able to create product", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -56,7 +55,7 @@ describe("Create Product UseCase", () => {
         };
 
         // Create a user
-        await createUserUseCase.execute(user);
+        const createdUser = await createUserUseCase.execute(user);
 
         // Authenticate a user
         await authenticateUserUseCase.execute({
@@ -65,7 +64,6 @@ describe("Create Product UseCase", () => {
         });
 
         const product: ICreateProductsDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
             quantity: Number(faker.random.numeric()),
@@ -74,15 +72,13 @@ describe("Create Product UseCase", () => {
 
         const createProduct = await createProductsUseCase.execute(
             product,
-            user.id
+            createdUser.id
         );
-
         expect(createProduct).toHaveProperty("id");
     });
 
     it("should not be able to create product with name already exists", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -91,7 +87,7 @@ describe("Create Product UseCase", () => {
         };
 
         // Create a user
-        await createUserUseCase.execute(user);
+        const createdUser = await createUserUseCase.execute(user);
 
         // Authenticate a user
         await authenticateUserUseCase.execute({
@@ -100,7 +96,6 @@ describe("Create Product UseCase", () => {
         });
 
         const product: ICreateProductsDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
             quantity: Number(faker.random.numeric()),
@@ -109,7 +104,7 @@ describe("Create Product UseCase", () => {
 
         const createProduct = await createProductsUseCase.execute(
             product,
-            user.id
+            createdUser.id
         );
 
         await expect(
@@ -121,14 +116,13 @@ describe("Create Product UseCase", () => {
                     quantity: faker.datatype.number(4),
                     unit_price: Number(faker.commerce.price()),
                 },
-                user.id
+                createdUser.id
             )
         ).rejects.toEqual(new AppError("Product already exists", 401));
     });
 
     it("should not be able to create product with quantity less than or equal to zero", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -136,8 +130,7 @@ describe("Create Product UseCase", () => {
             admin: true,
         };
 
-        // Create a user
-        await createUserUseCase.execute(user);
+        const createdUser = await createUserUseCase.execute(user);
 
         // Authenticate a user
         await authenticateUserUseCase.execute({
@@ -146,7 +139,6 @@ describe("Create Product UseCase", () => {
         });
 
         const product: ICreateProductsDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
             quantity: 0,
@@ -154,13 +146,12 @@ describe("Create Product UseCase", () => {
         };
 
         await expect(
-            createProductsUseCase.execute(product, user.id)
+            createProductsUseCase.execute(product, createdUser.id)
         ).rejects.toEqual(new AppError("Quantity is not valid", 401));
     });
 
     it("should not be able to create product with unit_price less than or equal to zero ", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -169,7 +160,7 @@ describe("Create Product UseCase", () => {
         };
 
         // Create a user
-        await createUserUseCase.execute(user);
+        const createdUser = await createUserUseCase.execute(user);
 
         // Authenticate a user
         await authenticateUserUseCase.execute({
@@ -178,7 +169,6 @@ describe("Create Product UseCase", () => {
         });
 
         const product: ICreateProductsDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
             quantity: Number(faker.random.numeric(2)),
@@ -186,7 +176,7 @@ describe("Create Product UseCase", () => {
         };
 
         await expect(
-            createProductsUseCase.execute(product, user.id)
+            createProductsUseCase.execute(product, createdUser.id)
         ).rejects.toEqual(new AppError("Price unit is not valid", 401));
     });
 });

@@ -1,4 +1,4 @@
-import { ICreateShoppingCartsDTO } from "@modules/shoppingCarts/dtos/ICreateShoppingCartsDTO";
+import { ICreateProductsShoppingCartsDTO } from "@modules/shoppingCarts/dtos/ICreateProductsShoppingCartsDTO";
 import { IShoppingCartsRepository } from "@modules/shoppingCarts/repositories/IShoppingCartsRepository";
 import { Repository } from "typeorm";
 
@@ -15,11 +15,13 @@ export class ShoppingCartsRepository implements IShoppingCartsRepository {
 
     async create({
         id,
+        id_users,
         products,
         subtotal,
-    }: ICreateShoppingCartsDTO): Promise<ShoppingCarts> {
+    }: ICreateProductsShoppingCartsDTO): Promise<ShoppingCarts> {
         const shoppingCart = this.repository.create({
             id,
+            id_users,
             products,
             subtotal,
         });

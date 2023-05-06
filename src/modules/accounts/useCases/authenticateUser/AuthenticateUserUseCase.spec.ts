@@ -38,7 +38,6 @@ describe("Authenticate User UseCase", () => {
 
     it("should be able to authenticate user", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -59,7 +58,6 @@ describe("Authenticate User UseCase", () => {
 
     it("should be able to authenticate user with email wrong", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -79,7 +77,6 @@ describe("Authenticate User UseCase", () => {
 
     it("should be able to authenticate user with password wrong", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),

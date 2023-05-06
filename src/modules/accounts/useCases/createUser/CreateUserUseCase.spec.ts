@@ -24,7 +24,6 @@ describe("Create User UseCase", () => {
 
     it("should be able to create user", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -32,12 +31,12 @@ describe("Create User UseCase", () => {
         };
 
         const createUser = await createUserUseCase.execute(user);
+
         expect(createUser).toHaveProperty("id");
     });
 
     it("should not be able to create user with leght name less than 6 characters or equall zero", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.datatype.string(4),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -51,7 +50,6 @@ describe("Create User UseCase", () => {
 
     it("should not be able to create user if email already exists ", async () => {
         const user1: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -61,7 +59,6 @@ describe("Create User UseCase", () => {
         await createUserUseCase.execute(user1);
 
         const user2: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: user1.email,
             password: faker.datatype.string(8),
@@ -75,7 +72,6 @@ describe("Create User UseCase", () => {
 
     it("should not be able to create user with password less than lenght 6 characters or equall zero", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(4),
@@ -89,7 +85,6 @@ describe("Create User UseCase", () => {
 
     it("should not be able to create a user without address", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.datatype.string(4),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -102,7 +97,6 @@ describe("Create User UseCase", () => {
     });
     it("should not be able to create a user without email field empty", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.datatype.string(4),
             email: "",
             password: faker.datatype.string(8),

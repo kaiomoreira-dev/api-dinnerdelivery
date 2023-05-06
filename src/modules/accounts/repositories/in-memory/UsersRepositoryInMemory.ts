@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+import { faker } from "@faker-js/faker";
 import { ICreateUserDTO } from "@modules/accounts/dtos/CreateUserDTO";
 import { Users } from "@modules/accounts/infra/typeorm/entities/Users";
 
@@ -10,7 +12,6 @@ export class UsersRepositoryInMemory implements IUsersRepository {
         return this.repository.find((user) => user.id === id);
     }
     async create({
-        id,
         name,
         email,
         password,
@@ -19,8 +20,10 @@ export class UsersRepositoryInMemory implements IUsersRepository {
     }: ICreateUserDTO): Promise<Users> {
         const user = new Users();
 
+        const generateID = faker.datatype.uuid();
+
         Object.assign(user, {
-            id,
+            id: generateID,
             name,
             email,
             password,

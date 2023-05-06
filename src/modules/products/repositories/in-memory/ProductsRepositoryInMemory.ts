@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+import { faker } from "@faker-js/faker";
 import { ICreateProductsDTO } from "@modules/products/dtos/ICreateProductsDTO";
 import { Products } from "@modules/products/infra/typeorm/entities/Products";
 
@@ -10,7 +12,6 @@ export class ProductsRepositoryInMemory implements IProductsRepository {
     return this.repository.find((product) => product.id === id);
   }
   async create({
-    id,
     name,
     description,
     quantity,
@@ -18,8 +19,10 @@ export class ProductsRepositoryInMemory implements IProductsRepository {
   }: ICreateProductsDTO): Promise<Products> {
     const product = new Products();
 
+    const generateID = faker.datatype.uuid();
+
     Object.assign(product, {
-      id,
+      id: generateID,
       name,
       description,
       quantity,

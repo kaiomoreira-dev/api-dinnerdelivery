@@ -222,7 +222,6 @@ describe("Add product in cart UseCase", () => {
         );
 
         const createdCart = await shoppingCartsRepositoryInMemory.create({
-            id: faker.datatype.uuid(),
             id_users: null,
             subtotal: 0,
             products: [],
@@ -257,7 +256,6 @@ describe("Add product in cart UseCase", () => {
         });
 
         const createdCart = await shoppingCartsRepositoryInMemory.create({
-            id: faker.datatype.uuid(),
             id_users: null,
             subtotal: 0,
             products: [],

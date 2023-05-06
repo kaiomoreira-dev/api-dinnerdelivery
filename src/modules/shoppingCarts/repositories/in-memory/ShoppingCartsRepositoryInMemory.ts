@@ -1,4 +1,6 @@
-import { ICreateShoppingCartsDTO } from "@modules/shoppingCarts/dtos/ICreateShoppingCartsDTO";
+/* eslint-disable import/no-extraneous-dependencies */
+import { faker } from "@faker-js/faker";
+import { ICreateProductsShoppingCartsDTO } from "@modules/shoppingCarts/dtos/ICreateProductsShoppingCartsDTO";
 import { ShoppingCarts } from "@modules/shoppingCarts/infra/typeorm/entities/ShoppingCarts";
 
 import { IShoppingCartsRepository } from "../IShoppingCartsRepository";
@@ -9,19 +11,21 @@ export class ShoppingCartsRepositoryInMemory
   repository: ShoppingCarts[] = [];
 
   async create({
-    id,
     id_users,
     products,
     subtotal,
-  }: ICreateShoppingCartsDTO): Promise<ShoppingCarts> {
+  }: ICreateProductsShoppingCartsDTO): Promise<ShoppingCarts> {
     const shoppingCarts = new ShoppingCarts();
 
+    const generateID = faker.datatype.uuid();
+
     Object.assign(shoppingCarts, {
-      id,
+      id: generateID,
       id_users,
       products,
       subtotal,
     });
+
     this.repository.push(shoppingCarts);
 
     return shoppingCarts;

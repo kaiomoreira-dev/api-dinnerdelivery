@@ -1,6 +1,5 @@
 import "dotenv/config";
 import { faker } from "@faker-js/faker";
-import { ICreateUserDTO } from "@modules/accounts/dtos/CreateUserDTO";
 import { hash } from "bcrypt";
 import request from "supertest";
 import { DataSource } from "typeorm";
@@ -35,7 +34,7 @@ describe("Add product in cart Controller", () => {
         await connection.destroy();
     });
 
-    it("should be able to add a product not exist in shopping cart", async () => {
+    it("should be able to add a product not exist in shopping cart anonymous", async () => {
         const authenticateUser = await request(app).post("/sessions").send({
             email: "useradmin@test.com",
             password: "userTest@!",
@@ -64,7 +63,7 @@ describe("Add product in cart Controller", () => {
         expect(addProductInCart.status).toBe(200);
     });
 
-    it("should be able to update a product already exist in shopping cart", async () => {
+    it("should be able to update a product already exist in shopping cart anonymous", async () => {
         const authenticateUser = await request(app).post("/sessions").send({
             email: "useradmin@test.com",
             password: "userTest@!",
@@ -97,6 +96,41 @@ describe("Add product in cart Controller", () => {
             .send();
 
         expect(updateProductInCart.status).toBe(200);
+    });
+
+    it("should be able to update a product already exist in shopping cart with shoppingCart ID invalid anonymous", async () => {
+        const authenticateUser = await request(app).post("/sessions").send({
+            email: "useradmin@test.com",
+            password: "userTest@!",
+        });
+
+        const { token } = authenticateUser.body;
+
+        const createProduct = await request(app)
+            .post("/products")
+            .send({
+                id: faker.datatype.uuid(),
+                name: faker.name.fullName(),
+                description: faker.commerce.productDescription(),
+                quantity: Number(faker.random.numeric()),
+                unit_price: Number(faker.commerce.price()),
+            })
+            .set({ Authorization: `Bearer ${token}` });
+
+        const { id } = createProduct.body;
+        const quantity = 5;
+
+        const addProductInCart = await request(app)
+            .post(`/shoppingCart/add-product/${id}/${quantity}/`)
+            .send();
+
+        const cartId = faker.datatype.uuid();
+
+        const updateProductInCart = await request(app)
+            .post(`/shoppingCart/add-product/${id}/${quantity}/${cartId}`)
+            .send();
+
+        expect(updateProductInCart.status).toBe(401);
     });
 
     it("should not be able to add a product to cart with invalid quantity", async () => {

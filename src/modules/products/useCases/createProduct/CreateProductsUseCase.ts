@@ -16,7 +16,7 @@ export class CreateProductsUseCase {
     ) {}
 
     async execute(
-        { id, name, description, quantity, unit_price }: ICreateProductsDTO,
+        { name, description, quantity, unit_price }: ICreateProductsDTO,
         id_users: string
     ): Promise<Products> {
         const userAuthorized = await this.userRepository.findById(id_users);
@@ -40,7 +40,6 @@ export class CreateProductsUseCase {
         }
 
         const product = await this.productsRepository.create({
-            id,
             name,
             description,
             quantity,

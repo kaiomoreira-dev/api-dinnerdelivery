@@ -42,7 +42,6 @@ describe("Refresh token UseCase", () => {
 
     it("should create a refresh token using the refresh token provided", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
@@ -68,7 +67,6 @@ describe("Refresh token UseCase", () => {
     });
     it("should not be able to create a refresh token with refresh token invalid", async () => {
         const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
             name: faker.name.fullName(),
             email: faker.internet.email(),
             password: faker.datatype.string(8),
