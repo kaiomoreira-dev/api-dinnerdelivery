@@ -22,6 +22,8 @@ export class CreateProdutcs1682627046289 implements MigrationInterface {
           {
             name: "unit_price",
             type: "decimal",
+            precision: 10,
+            scale: 2,
           },
           {
             name: "quantity",
