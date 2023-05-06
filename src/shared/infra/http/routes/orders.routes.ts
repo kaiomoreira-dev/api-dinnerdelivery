@@ -1,4 +1,4 @@
-import { CreateOrderController } from "@modules/accounts/useCases/createOrder/CreateOrderController";
+import { CreateOrderController } from "@modules/orders/useCases/createOrder/CreateOrderController";
 import { Router } from "express";
 
 import { ensureAuthenticate } from "../middlewares/ensureAuthenticate";
