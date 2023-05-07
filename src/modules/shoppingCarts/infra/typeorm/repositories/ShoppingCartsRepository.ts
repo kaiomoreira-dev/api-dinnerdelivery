@@ -1,4 +1,5 @@
 import { ICreateProductsShoppingCartsDTO } from "@modules/shoppingCarts/dtos/ICreateProductsShoppingCartsDTO";
+import { ICreateShoppingCartsDTO } from "@modules/shoppingCarts/dtos/ICreateShoppingCartsDTO";
 import { IShoppingCartsRepository } from "@modules/shoppingCarts/repositories/IShoppingCartsRepository";
 import { Repository } from "typeorm";
 
@@ -16,13 +17,11 @@ export class ShoppingCartsRepository implements IShoppingCartsRepository {
     async create({
         id,
         id_users,
-        products,
         subtotal,
-    }: ICreateProductsShoppingCartsDTO): Promise<ShoppingCarts> {
+    }: ICreateShoppingCartsDTO): Promise<ShoppingCarts> {
         const shoppingCart = this.repository.create({
             id,
             id_users,
-            products,
             subtotal,
         });
 
@@ -36,10 +35,14 @@ export class ShoppingCartsRepository implements IShoppingCartsRepository {
     }
 
     async findById(id: string): Promise<ShoppingCarts> {
-        return this.repository.findOne({
+        const shoppingCart = await this.repository.findOne({
             where: { id },
             relations: { products: true },
         });
+
+        shoppingCart.subtotal = Number(shoppingCart.subtotal);
+
+        return shoppingCart;
     }
 
     async updateById(id: string, subtotal?: number): Promise<void> {
