@@ -4,7 +4,6 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-plusplus */
 import { Products } from "@modules/products/infra/typeorm/entities/Products";
-import { ProductsShoppingCarts } from "@modules/shoppingCarts/infra/typeorm/entities/ProductsShoppingCarts";
 import { IProductsShoppingCartsRepository } from "@modules/shoppingCarts/repositories/IProductsShoppingCartsRepository";
 import { IShoppingCartsRepository } from "@modules/shoppingCarts/repositories/IShoppingCartsRepository";
 import { inject, injectable } from "tsyringe";
@@ -12,12 +11,10 @@ import { inject, injectable } from "tsyringe";
 import { AppError } from "@shared/errors/AppError";
 
 interface IResponse {
-    shoppingCart: {
-        id: string;
-        id_users: string;
-        subtotal: number;
-        products: Products[];
-    };
+    id: string;
+    id_users: string;
+    subtotal: number;
+    products: Products[];
 }
 
 @injectable()
@@ -56,12 +53,10 @@ export class FindShoppingCartByIdUseCase {
         }
 
         cartInfo = {
-            shoppingCart: {
-                id: shoppingCartExist.id,
-                id_users: shoppingCartExist.id_users,
-                subtotal: shoppingCartExist.subtotal,
-                products: itemProduct,
-            },
+            id: shoppingCartExist.id,
+            id_users: shoppingCartExist.id_users,
+            subtotal: shoppingCartExist.subtotal,
+            products: itemProduct,
         };
 
         return cartInfo;
