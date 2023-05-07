@@ -46,7 +46,6 @@ export class CreateProductsShoppingCartsUseCase {
         const foundProducts = await this.productsRepository.findById(
             id_products
         );
-
         if (!foundProducts) {
             throw new AppError("Product is not found", 404);
         }
@@ -61,7 +60,6 @@ export class CreateProductsShoppingCartsUseCase {
             let shoppingCartExist = await this.shoppingCartsRepository.findById(
                 id_shoppingCarts
             );
-
             if (!shoppingCartExist) {
                 throw new AppError("ShoppingCart ID is not valid", 401);
             }
@@ -72,18 +70,60 @@ export class CreateProductsShoppingCartsUseCase {
                     shoppingCartExist.id
                 );
 
+            if (productExistInShoppingCart) {
+                shoppingCartExist.subtotal += subtotal;
+                productExistInShoppingCart.quantity += quantity;
+
+                await this.shoppingCartsRepository.updateById(
+                    shoppingCartExist.id,
+                    shoppingCartExist.subtotal
+                );
+
+                await this.productsShoppingCartsRepository.updateById(
+                    shoppingCartExist.id,
+                    foundProducts.id,
+                    productExistInShoppingCart.quantity
+                );
+
+                listProductsInCart =
+                    await this.productsShoppingCartsRepository.listProductsInShoppingCart(
+                        shoppingCartExist.id
+                    );
+
+                for (let productInCart of listProductsInCart) {
+                    itemProduct.push({
+                        id: productInCart.products.id,
+                        name: productInCart.products.name,
+                        description: productInCart.products.description,
+                        unit_price: productInCart.unit_price,
+                        quantity: productInCart.quantity,
+                    });
+                }
+
+                cartInfo = {
+                    shoppingCart: {
+                        id: shoppingCartExist.id,
+                        id_users: shoppingCartExist.id_users,
+                        subtotal: shoppingCartExist.subtotal,
+                        products: itemProduct,
+                    },
+                };
+
+                return cartInfo;
+            }
+
+            productInCart = await this.productsShoppingCartsRepository.create({
+                id_products: foundProducts.id,
+                id_shoppingCarts: shoppingCartExist.id,
+                quantity,
+                unit_price: foundProducts.unit_price,
+            });
+
             shoppingCartExist.subtotal += subtotal;
-            productExistInShoppingCart.quantity += quantity;
 
             await this.shoppingCartsRepository.updateById(
                 shoppingCartExist.id,
                 shoppingCartExist.subtotal
-            );
-
-            await this.productsShoppingCartsRepository.updateById(
-                shoppingCartExist.id,
-                foundProducts.id,
-                productExistInShoppingCart.quantity
             );
 
             listProductsInCart =
