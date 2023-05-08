@@ -13,12 +13,14 @@ export class UpdateShoppingCartController {
             UpdateShoppingCartUseCase
         );
 
-        const shoppingCart = await updateShoppingCartUseCase.execute({
+        await updateShoppingCartUseCase.execute({
             id_shoppingCarts,
             id_products,
             quantity: qunatityNumber,
         });
 
-        return response.status(200).json(shoppingCart);
+        return response
+            .status(200)
+            .json({ message: "Update Shopping Cart Successfully!" });
     }
 }
