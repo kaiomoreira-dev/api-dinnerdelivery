@@ -19,7 +19,7 @@ export class ProductsShoppingCarts {
     @PrimaryColumn()
     id_shoppingCarts?: string;
 
-    @Column()
+    @Column("numeric", { precision: 10, scale: 2 })
     unit_price: number;
 
     @Column()
