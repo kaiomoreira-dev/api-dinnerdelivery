@@ -79,11 +79,11 @@ export class CreateProductsShoppingCartsUseCase {
                     shoppingCartExist.subtotal
                 );
 
-                await this.productsShoppingCartsRepository.updateById(
-                    shoppingCartExist.id,
-                    foundProducts.id,
-                    productExistInShoppingCart.quantity
-                );
+                await this.productsShoppingCartsRepository.updateById({
+                    id_shoppingCarts: shoppingCartExist.id,
+                    id_products: foundProducts.id,
+                    quantity: productExistInShoppingCart.quantity,
+                });
 
                 listProductsInCart =
                     await this.productsShoppingCartsRepository.listProductsInShoppingCart(
@@ -155,7 +155,6 @@ export class CreateProductsShoppingCartsUseCase {
 
         const createShoppingCart = await this.shoppingCartsRepository.create({
             id: id_shoppingCarts,
-            products: [],
             subtotal: 0,
         });
 
