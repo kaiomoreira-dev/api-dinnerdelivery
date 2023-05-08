@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { ICreateProductsShoppingCartsDTO } from "@modules/shoppingCarts/dtos/ICreateProductsShoppingCartsDTO";
 import { IProductsShoppingCartsRepository } from "@modules/shoppingCarts/repositories/IProductsShoppingCartsRepository";
 import { Repository } from "typeorm";
@@ -17,7 +18,7 @@ export class ProductsShoppingCartsRepository
     async listProductsInShoppingCart(
         id_shoppingCarts: string
     ): Promise<ProductsShoppingCarts[]> {
-        return this.repository
+        const productsShoppingCarts = await this.repository
             .createQueryBuilder("productsShoppingCarts")
             .leftJoinAndSelect("productsShoppingCarts.products", "products")
             .where(
@@ -27,6 +28,12 @@ export class ProductsShoppingCartsRepository
                 }
             )
             .getMany();
+
+        for (const product of productsShoppingCarts) {
+            product.unit_price = Number(product.unit_price);
+        }
+
+        return productsShoppingCarts;
     }
     async findProductInShoppingCart(
         id_products: string,
@@ -53,7 +60,7 @@ export class ProductsShoppingCartsRepository
         quantity,
         unit_price,
     }: ICreateProductsShoppingCartsDTO): Promise<ProductsShoppingCarts> {
-        const addProductInCart = await this.repository.create({
+        const addProductInCart = this.repository.create({
             id_products,
             id_shoppingCarts,
             unit_price,
@@ -65,11 +72,11 @@ export class ProductsShoppingCartsRepository
         return addProductInCart;
     }
 
-    async updateById(
-        id_shoppingCarts: string,
-        id_products: string,
-        quantity: number
-    ): Promise<void> {
+    async updateById({
+        id_shoppingCarts,
+        id_products,
+        quantity,
+    }: ICreateProductsShoppingCartsDTO): Promise<void> {
         await this.repository
             .createQueryBuilder()
             .update()
