@@ -25,7 +25,7 @@ export class ShoppingCarts {
     @JoinColumn({ name: "id_users" })
     users: Users;
 
-    @Column()
+    @Column("numeric", { precision: 10, scale: 2 })
     subtotal: number;
 
     @ManyToMany(() => Products, (products) => products.id)
