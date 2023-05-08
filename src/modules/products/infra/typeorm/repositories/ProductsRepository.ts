@@ -20,6 +20,7 @@ export class ProductsRepository implements IProductsRepository {
         description,
         quantity,
         unit_price,
+        product_img,
     }: ICreateProductsDTO): Promise<Products> {
         const product = this.repository.create({
             id,
@@ -27,6 +28,7 @@ export class ProductsRepository implements IProductsRepository {
             description,
             quantity,
             unit_price,
+            product_img,
         });
 
         await this.repository.save(product);
@@ -43,7 +45,13 @@ export class ProductsRepository implements IProductsRepository {
         return products;
     }
     async findById(id: string): Promise<Products> {
-        const product = await this.repository.findOneBy({ id });
+        const product = await this.repository.findOneBy({ id }).catch(() => {
+            return null;
+        });
+
+        if (!product) {
+            return null;
+        }
 
         product.unit_price = Number(product.unit_price);
 
@@ -58,11 +66,12 @@ export class ProductsRepository implements IProductsRepository {
         description,
         quantity,
         unit_price,
+        product_img,
     }: ICreateProductsDTO): Promise<void> {
         await this.repository
             .createQueryBuilder()
             .update()
-            .set({ name, description, quantity, unit_price })
+            .set({ name, description, quantity, unit_price, product_img })
             .where("id = :id", { id })
             .execute();
     }
