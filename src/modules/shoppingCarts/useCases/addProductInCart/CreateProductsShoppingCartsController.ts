@@ -12,13 +12,14 @@ export class CreateProductsShoppingCartsController {
             CreateProductsShoppingCartsUseCase
         );
 
-        const addProductInSoppingCart =
-            await createProductsShoppingCartsUseCase.execute({
-                id_products: idProducts,
-                id_shoppingCarts: idShoppingCarts,
-                quantity: quantityFormat,
-            });
+        await createProductsShoppingCartsUseCase.execute({
+            id_products: idProducts,
+            id_shoppingCarts: idShoppingCarts,
+            quantity: quantityFormat,
+        });
 
-        return response.status(200).json(addProductInSoppingCart);
+        return response
+            .status(200)
+            .json({ message: "ShoppingCart updated successfully" });
     }
 }
