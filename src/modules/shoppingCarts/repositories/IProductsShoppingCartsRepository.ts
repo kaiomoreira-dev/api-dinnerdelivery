@@ -9,13 +9,9 @@ export interface IProductsShoppingCartsRepository {
   ): Promise<ProductsShoppingCarts[]>;
 
   findProductInShoppingCart(
-    id_products: string,
-    id_shoppingCarts: string
+    id_products?: string,
+    id_shoppingCarts?: string
   ): Promise<ProductsShoppingCarts>;
 
-  updateById(
-    id_shoppingCarts: string,
-    id_products: string,
-    quantity: number
-  ): Promise<void>;
+  updateById(data: ICreateProductsShoppingCartsDTO): Promise<void>;
 }
