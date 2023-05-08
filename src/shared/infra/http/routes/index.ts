@@ -11,6 +11,6 @@ export const router = Router();
 router.use("/users", usersRoutes);
 router.use("/orders", orderRoutes);
 router.use("/products", productRoutes);
-router.use("/shoppingCart", shoppingCartRoutes);
+router.use("/shoppingCarts", shoppingCartRoutes);
 
 router.use(authenticateRoutes);
