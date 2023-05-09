@@ -9,6 +9,12 @@ export class CreateProductsShoppingCarts1682689664277
         name: "productsShoppingCarts",
         columns: [
           {
+            name: "id",
+            type: "uuid",
+            isPrimary: true,
+          },
+
+          {
             name: "id_products",
             type: "uuid",
           },
