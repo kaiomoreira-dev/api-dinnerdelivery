@@ -31,6 +31,14 @@ export class UpdateProductUseCase {
             throw new AppError("Product not found", 404);
         }
 
+        if (quantity <= 0) {
+            throw new AppError("Quantity is not valid", 401);
+        }
+
+        if (unit_price <= 0 || !unit_price) {
+            throw new AppError("Price unit is not valid", 401);
+        }
+
         await this.productsRepository.updateById({
             id: productsExists.id,
             name,
