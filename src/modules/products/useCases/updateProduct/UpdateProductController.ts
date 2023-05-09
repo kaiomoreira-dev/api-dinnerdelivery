@@ -24,6 +24,6 @@ export class UpdateProductController {
 
         return response
             .status(200)
-            .json({ message: "Product updated successfully" });
+            .json({ message: "Product updated successfully!" });
     }
 }
