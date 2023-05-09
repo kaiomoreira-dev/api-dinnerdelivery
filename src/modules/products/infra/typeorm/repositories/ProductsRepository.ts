@@ -36,7 +36,9 @@ export class ProductsRepository implements IProductsRepository {
         return product;
     }
     async list(): Promise<Products[]> {
-        const products = await this.repository.find();
+        const products = await this.repository.find({
+            order: { updated_at: "DESC" },
+        });
 
         products.forEach((product: Products) => {
             product.unit_price = Number(product.unit_price);
