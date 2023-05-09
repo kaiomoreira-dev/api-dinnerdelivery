@@ -6,6 +6,11 @@ const tmpFolder = resolve(__dirname, "..", "..", "tmp");
 
 export default {
   tmpFolder,
+  limitis: {
+    fileSize: 1024 * 1024 * 5,
+    fieldNameSize: 100,
+    boundary: "WebKitFormBoundaryJbjNTq16aFubosQg",
+  },
   storage: multer.diskStorage({
     destination: tmpFolder,
     filename: (request, file, callback) => {
