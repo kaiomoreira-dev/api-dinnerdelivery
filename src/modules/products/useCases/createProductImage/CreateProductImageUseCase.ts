@@ -1,8 +1,6 @@
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { ICreateProductsDTO } from "@modules/products/dtos/ICreateProductsDTO";
-import { Products } from "@modules/products/infra/typeorm/entities/Products";
 import { IProductsRepository } from "@modules/products/repositories/IProductsRepository";
-import { deleteFile } from "@utils/deleteFIle";
 import { inject, injectable } from "tsyringe";
 
 import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvide";
@@ -42,7 +40,7 @@ export class CreateProductImageUseCase {
             );
         }
 
-        await this.localStorageProvider.save(product_img, "products_img");
+        await this.localStorageProvider.save(product_img, "products");
 
         await this.productsRepository.updateById({
             id: productsExists.id,
