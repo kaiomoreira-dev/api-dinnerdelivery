@@ -8,11 +8,15 @@ import {
     PrimaryColumn,
     UpdateDateColumn,
 } from "typeorm";
+import { v4 as uuidv4 } from "uuid";
 
 import { ShoppingCarts } from "./ShoppingCarts";
 
 @Entity("productsShoppingCarts")
 export class ProductsShoppingCarts {
+    @PrimaryColumn()
+    id: string;
+
     @PrimaryColumn()
     id_products: string;
 
@@ -38,4 +42,10 @@ export class ProductsShoppingCarts {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    constructor() {
+        if (!this.id) {
+            this.id = uuidv4();
+        }
+    }
 }
