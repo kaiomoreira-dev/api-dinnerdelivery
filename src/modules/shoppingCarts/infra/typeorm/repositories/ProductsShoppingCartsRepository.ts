@@ -7,13 +7,17 @@ import dataSource from "@shared/infra/typeorm";
 
 import { ProductsShoppingCarts } from "../entities/ProductsShoppingCarts";
 
-export class ProductsShoppingCartsRepository
+export class ProductsShoppingCartsrtsRepository
     implements IProductsShoppingCartsRepository
 {
     private repository: Repository<ProductsShoppingCarts>;
 
     constructor() {
         this.repository = dataSource.getRepository(ProductsShoppingCarts);
+    }
+
+    async deleteById(id: string): Promise<void> {
+        await this.repository.delete({ id });
     }
     async listProductsInShoppingCart(
         id_shoppingCarts: string
