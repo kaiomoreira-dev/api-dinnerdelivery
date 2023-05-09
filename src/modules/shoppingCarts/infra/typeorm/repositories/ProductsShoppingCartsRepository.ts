@@ -55,12 +55,14 @@ export class ProductsShoppingCartsRepository
         return findProductInShoppingCart;
     }
     async create({
+        id,
         id_products,
         id_shoppingCarts,
         quantity,
         unit_price,
     }: ICreateProductsShoppingCartsDTO): Promise<ProductsShoppingCarts> {
         const addProductInCart = this.repository.create({
+            id,
             id_products,
             id_shoppingCarts,
             unit_price,
