@@ -4,4 +4,5 @@ export interface ICreateProductsDTO {
   description?: string;
   unit_price?: number;
   quantity?: number;
+  product_img?: string;
 }
