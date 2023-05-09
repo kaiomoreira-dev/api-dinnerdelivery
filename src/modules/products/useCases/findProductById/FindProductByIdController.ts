@@ -13,7 +13,7 @@ export class FindProductByIdController {
         );
 
         const product = await findProductByIdUseCase.execute(
-            { id: id_products },
+            id_products,
             id_users
         );
 
