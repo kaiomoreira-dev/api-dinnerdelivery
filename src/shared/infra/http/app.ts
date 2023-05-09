@@ -16,6 +16,7 @@ import { AppError } from "@shared/errors/AppError";
 
 import cors from "cors";
 
+import uploadConfig from "@config/uploadConfig";
 import { router } from "./routes";
 
 export const app = express();
@@ -32,6 +33,8 @@ app.use(
 );
 
 app.use(router);
+
+app.use("/products", express.static(`${uploadConfig.tmpFolder}/products`));
 
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
