@@ -5,5 +5,5 @@ export interface ICreateProductsDTO {
   unit_price?: number;
   quantity?: number;
   product_img?: string;
-  product_url(): string;
+  product_url?(): string;
 }
