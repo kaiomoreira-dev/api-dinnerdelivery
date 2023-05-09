@@ -6,13 +6,13 @@ import { IRefreshTokensRepository } from "@modules/accounts/repositories/IRefres
 import "./providers";
 import { ProductsRepository } from "@modules/products/infra/typeorm/repositories/ProductsRepository";
 import { IProductsRepository } from "@modules/products/repositories/IProductsRepository";
-import { ProductsShoppingCartsRepository } from "@modules/shoppingCarts/infra/typeorm/repositories/ProductsShoppingCartsRepository";
 import { ShoppingCartsRepository } from "@modules/shoppingCarts/infra/typeorm/repositories/ShoppingCartsRepository";
 import { IProductsShoppingCartsRepository } from "@modules/shoppingCarts/repositories/IProductsShoppingCartsRepository";
 import { IShoppingCartsRepository } from "@modules/shoppingCarts/repositories/IShoppingCartsRepository";
 import { container } from "tsyringe";
 import "@shared/container/in-memory";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { ProductsShoppingCartsrtsRepository } from "@modules/shoppingCarts/infra/typeorm/repositories/ProductsShoppingCartsRepository";
 
 container.registerSingleton<IUsersRepository>(
   "UsersRepository",
@@ -36,5 +36,5 @@ container.registerSingleton<IShoppingCartsRepository>(
 
 container.registerSingleton<IProductsShoppingCartsRepository>(
   "ProductsShoppingCartsRepository",
-  ProductsShoppingCartsRepository
+  ProductsShoppingCartsrtsRepository
 );
