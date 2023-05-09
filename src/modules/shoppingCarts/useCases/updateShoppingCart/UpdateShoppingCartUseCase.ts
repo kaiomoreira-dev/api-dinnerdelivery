@@ -41,6 +41,10 @@ export class UpdateShoppingCartUseCase {
             throw new AppError("Product is not found", 404);
         }
 
+        if (quantity <= 0) {
+            throw new AppError("Quantity is not valid", 401);
+        }
+
         const findProductInShoppingCart =
             await this.productsShoppingCartsRepository.findProductInShoppingCart(
                 foundProducts.id,
