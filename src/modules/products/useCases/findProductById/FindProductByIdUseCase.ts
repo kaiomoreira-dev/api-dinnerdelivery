@@ -1,10 +1,11 @@
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { ICreateProductsDTO } from "@modules/products/dtos/ICreateProductsDTO";
 import { Products } from "@modules/products/infra/typeorm/entities/Products";
 import { IProductsRepository } from "@modules/products/repositories/IProductsRepository";
 import { inject, injectable } from "tsyringe";
 
 import { AppError } from "@shared/errors/AppError";
+
+import { ProductMap } from "./mapper/ProductMap";
 
 @injectable()
 export class FindProductByIdUseCase {
@@ -15,10 +16,7 @@ export class FindProductByIdUseCase {
         private userRepository: IUsersRepository
     ) {}
 
-    async execute(
-        { id: id_products, product_url }: ICreateProductsDTO,
-        id_users: string
-    ): Promise<Products> {
+    async execute(id_products: string, id_users: string): Promise<Products> {
         const userAuthorized = await this.userRepository.findById(id_users);
 
         if (!userAuthorized) {
@@ -33,16 +31,6 @@ export class FindProductByIdUseCase {
             throw new AppError("Product not found", 404);
         }
 
-        const product: Products = {
-            id: productsExists.id,
-            name: productsExists.name,
-            description: productsExists.description,
-            quantity: productsExists.quantity,
-            unit_price: productsExists.unit_price,
-            product_img: productsExists.product_img,
-            product_url,
-        };
-
-        return product;
+        return ProductMap.toDTO(productsExists);
     }
 }
