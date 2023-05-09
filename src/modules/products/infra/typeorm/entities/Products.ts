@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+import { Expose } from "class-transformer";
 import {
     Column,
     CreateDateColumn,
@@ -24,11 +26,26 @@ export class Products {
     @Column()
     quantity?: number;
 
+    @Column()
+    product_img?: string;
+
     @CreateDateColumn()
     created_at?: Date;
 
     @UpdateDateColumn()
     updated_at?: Date;
+
+    @Expose({ name: "product_url" })
+    product_url?(): string {
+        switch (process.env.disk) {
+            case "local":
+                return `${process.env.API_URL_APP}/files/avatar/${this.product_img}`;
+            case "s3":
+                return `${process.env.AWS_BUCKET_URL}/files/avatar/${this.product_img}`;
+            default:
+                return null;
+        }
+    }
 
     constructor() {
         if (!this.id) {
