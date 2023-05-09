@@ -39,9 +39,9 @@ export class Products {
     product_url?(): string {
         switch (process.env.disk) {
             case "local":
-                return `${process.env.API_URL_APP}/files/avatar/${this.product_img}`;
+                return `${process.env.API_URL_APP}/products/${this.product_img}`;
             case "s3":
-                return `${process.env.AWS_BUCKET_URL}/files/avatar/${this.product_img}`;
+                return `${process.env.AWS_BUCKET_URL}/products/${this.product_img}`;
             default:
                 return null;
         }
