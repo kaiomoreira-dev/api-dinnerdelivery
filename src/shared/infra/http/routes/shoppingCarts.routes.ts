@@ -19,7 +19,7 @@ shoppingCartRoutes.post(
 
 shoppingCartRoutes.get("/:id", findShoppingCartByIdController.handle);
 
-shoppingCartRoutes.post(
+shoppingCartRoutes.put(
   "/:id_products/:quantity/:id_shoppingCarts",
   updateShoppingCartController.handle
 );
