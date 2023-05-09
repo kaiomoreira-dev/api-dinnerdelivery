@@ -30,6 +30,11 @@ export class CreateProdutcs1682627046289 implements MigrationInterface {
             type: "int",
           },
           {
+            name: "product_img",
+            type: "varchar",
+            isNullable: true,
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",
