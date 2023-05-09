@@ -31,10 +31,9 @@ app.use(
     optionsSuccessStatus: 204,
   })
 );
+app.use("/products", express.static(`${uploadConfig.tmpFolder}/products`));
 
 app.use(router);
-
-app.use("/products", express.static(`${uploadConfig.tmpFolder}/products`));
 
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
