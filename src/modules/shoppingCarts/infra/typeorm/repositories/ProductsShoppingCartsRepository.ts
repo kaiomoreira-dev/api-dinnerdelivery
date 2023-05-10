@@ -19,6 +19,7 @@ export class ProductsShoppingCartsrtsRepository
     async deleteById(id: string): Promise<void> {
         await this.repository.delete({ id });
     }
+
     async listProductsInShoppingCart(
         id_shoppingCarts: string
     ): Promise<ProductsShoppingCarts[]> {
