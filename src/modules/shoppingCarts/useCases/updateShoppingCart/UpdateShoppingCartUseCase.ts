@@ -41,7 +41,7 @@ export class UpdateShoppingCartUseCase {
             throw new AppError("Product is not found", 404);
         }
 
-        if (quantity <= 0) {
+        if (quantity < 0) {
             throw new AppError("Quantity is not valid", 401);
         }
 
@@ -51,17 +51,63 @@ export class UpdateShoppingCartUseCase {
                 shoppingCartExist.id
             );
 
-        const subtotal = findProductInShoppingCart.unit_price * quantity;
+        const listProductsInCart =
+            await this.productsShoppingCartsRepository.listProductsInShoppingCart(
+                shoppingCartExist.id
+            );
 
-        await this.shoppingCartsRepository.updateById(
-            shoppingCartExist.id,
-            subtotal
-        );
+        let calcSubtotal = 0;
+
+        listProductsInCart.forEach((product) => {
+            let calcPrice = product.unit_price * product.quantity;
+
+            calcSubtotal += calcPrice;
+        });
+
+        if (quantity === 0 && listProductsInCart.length > 1) {
+            const priceProductFind =
+                findProductInShoppingCart.quantity *
+                findProductInShoppingCart.unit_price;
+
+            const subtotal = Math.abs(calcSubtotal - priceProductFind);
+
+            await this.shoppingCartsRepository.updateById(
+                shoppingCartExist.id,
+                subtotal
+            );
+
+            await this.productsShoppingCartsRepository.deleteById(
+                findProductInShoppingCart.id
+            );
+
+            return;
+        }
+
+        if (quantity === 0 && listProductsInCart.length === 1) {
+            await this.productsShoppingCartsRepository.deleteById(
+                findProductInShoppingCart.id
+            );
+
+            await this.shoppingCartsRepository.deleteById(shoppingCartExist.id);
+
+            return;
+        }
 
         await this.productsShoppingCartsRepository.updateById({
             id_shoppingCarts,
             id_products,
             quantity,
         });
+
+        const priceProductInCart =
+            (quantity - findProductInShoppingCart.quantity) *
+            findProductInShoppingCart.unit_price;
+
+        const subtotal = calcSubtotal + priceProductInCart;
+
+        await this.shoppingCartsRepository.updateById(
+            shoppingCartExist.id,
+            subtotal
+        );
     }
 }
