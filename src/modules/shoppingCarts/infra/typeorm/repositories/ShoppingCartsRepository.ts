@@ -14,6 +14,10 @@ export class ShoppingCartsRepository implements IShoppingCartsRepository {
         this.repository = dataSource.getRepository(ShoppingCarts);
     }
 
+    async deleteById(id: string): Promise<void> {
+        await this.repository.delete({ id });
+    }
+
     async create({
         id,
         id_users,
@@ -39,6 +43,10 @@ export class ShoppingCartsRepository implements IShoppingCartsRepository {
             where: { id },
             relations: { products: true },
         });
+
+        if (!shoppingCart) {
+            return null;
+        }
 
         shoppingCart.subtotal = Number(shoppingCart.subtotal);
 
