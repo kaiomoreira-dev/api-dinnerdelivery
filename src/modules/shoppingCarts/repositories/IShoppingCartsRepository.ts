@@ -8,4 +8,5 @@ export interface IShoppingCartsRepository {
   list(): Promise<ShoppingCarts[]>;
   findById(id: string): Promise<ShoppingCarts>;
   updateById(id: string, subtotal?: number): Promise<void>;
+  deleteById(id: string): Promise<void>;
 }
