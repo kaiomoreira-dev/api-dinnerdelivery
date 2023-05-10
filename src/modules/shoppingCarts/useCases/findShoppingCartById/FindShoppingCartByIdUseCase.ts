@@ -33,6 +33,7 @@ export class FindShoppingCartByIdUseCase {
         const shoppingCartExist = await this.shoppingCartsRepository.findById(
             id_shoppingCarts
         );
+
         if (!shoppingCartExist) {
             throw new AppError("ShoppingCart ID is not valid", 401);
         }
