@@ -8,9 +8,9 @@ import { usersRoutes } from "./users.routes";
 
 export const router = Router();
 
-router.use("/users", usersRoutes);
-router.use("/orders", orderRoutes);
-router.use("/products", productRoutes);
-router.use("/shoppingCarts", shoppingCartRoutes);
+router.use("/api/users", usersRoutes);
+router.use("/api/orders", orderRoutes);
+router.use("/api/products", productRoutes);
+router.use("/api/shoppingCarts", shoppingCartRoutes);
 
 router.use(authenticateRoutes);
