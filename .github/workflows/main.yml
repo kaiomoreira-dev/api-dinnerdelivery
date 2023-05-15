@@ -31,7 +31,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           source: "., !node_modules"
-          target: "~/app/api-dinner-delivery"
+          target: "~/app/api-dinnerdelivery"
 
       - name: Update all package
         uses: appleboy/ssh-action@master
@@ -41,7 +41,7 @@ jobs:
             port: ${{ secrets.SSH_PORT }}
             key: ${{ secrets.SSH_KEY }}
             script: |
-              cd ~/app/api-dinner-delivery
+              cd ~/app/api-dinnerdelivery
               yarn
               yarn migration:run
               pm2 restart dinnerDelivery
