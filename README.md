@@ -35,7 +35,7 @@ Além disto é bom ter um editor para trabalhar com o código como
 $ git clone <https://github.com/kaiomoreira-dev/api-dinner-delivery.git>
 
 # Acesse a pasta do projeto no terminal/cmd
-$ cd api-dinner-delivery
+$ cd api-dinnerdelivery
 
 # Instale as dependências
 $ yarn ou npm install
