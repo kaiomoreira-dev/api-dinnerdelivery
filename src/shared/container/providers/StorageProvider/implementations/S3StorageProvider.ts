@@ -1,6 +1,7 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable import/no-extraneous-dependencies */
+import { S3 } from "@aws-sdk/client-s3";
 import upload from "@config/uploadConfig";
-import { S3 } from "aws-sdk";
 import fs from "fs";
 import mime from "mime";
 import { resolve } from "path";
@@ -23,15 +24,13 @@ export class S3StorageProvider implements IStorageProvider {
 
         const ContentType = mime.getType(filePath);
 
-        await this.client
-            .putObject({
-                Bucket: `${process.env.AWS_BUCKET}/${folder}`,
-                Key: file,
-                ACL: "public-read",
-                Body: readedFilePath,
-                ContentType,
-            })
-            .promise();
+        await this.client.putObject({
+            Bucket: `${process.env.AWS_BUCKET}/${folder}`,
+            Key: file,
+            ACL: "public-read",
+            Body: readedFilePath,
+            ContentType,
+        });
 
         // removendo das pasta tmp
         await fs.promises.unlink(filePath);
@@ -39,11 +38,9 @@ export class S3StorageProvider implements IStorageProvider {
         return file;
     }
     async delete(file: string, folder: string): Promise<void> {
-        await this.client
-            .deleteObject({
-                Bucket: `${process.env.AWS_BUCKET}/${folder}`,
-                Key: file,
-            })
-            .promise();
+        await this.client.deleteObject({
+            Bucket: `${process.env.AWS_BUCKET}/${folder}`,
+            Key: file,
+        });
     }
 }
