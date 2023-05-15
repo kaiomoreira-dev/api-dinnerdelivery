@@ -15,6 +15,7 @@
     "seed": "ts-node-dev -r tsconfig-paths/register src/shared/infra/typeorm/seed/admin.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.332.0",
     "@types/bcrypt": "^5.0.0",
     "@types/mime": "^3.0.1",
     "@types/redis": "^2.8.28",
