@@ -11,18 +11,10 @@ import { ProductMap } from "./mapper/ProductMap";
 export class FindProductByIdUseCase {
     constructor(
         @inject("ProductsRepository")
-        private productsRepository: IProductsRepository,
-        @inject("UsersRepository")
-        private userRepository: IUsersRepository
+        private productsRepository: IProductsRepository
     ) {}
 
-    async execute(id_products: string, id_users: string): Promise<Products> {
-        const userAuthorized = await this.userRepository.findById(id_users);
-
-        if (!userAuthorized) {
-            throw new AppError("User not authorized to create products", 401);
-        }
-
+    async execute(id_products: string): Promise<Products> {
         const productsExists = await this.productsRepository.findById(
             id_products
         );
