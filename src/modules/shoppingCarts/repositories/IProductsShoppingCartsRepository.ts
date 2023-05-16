@@ -15,5 +15,5 @@ export interface IProductsShoppingCartsRepository {
 
   updateById(data: ICreateProductsShoppingCartsDTO): Promise<void>;
 
-  deleteById(id: string): Promise<void>;
+  deleteById(id: string): Promise<boolean>;
 }
