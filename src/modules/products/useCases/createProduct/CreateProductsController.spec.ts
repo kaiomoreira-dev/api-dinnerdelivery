@@ -17,7 +17,7 @@ describe("Create Product Controller", () => {
         await connection.runMigrations();
 
         const id = uuidv4();
-        const email = "useradmin@test.com";
+        const email = "useradmin6@test.com";
         const password = await hash("userTest@!", 8);
 
         connection.query(
@@ -35,15 +35,15 @@ describe("Create Product Controller", () => {
     });
 
     it("should be able to create a product", async () => {
-        const authenticateUser = await request(app).post("/sessions").send({
-            email: "useradmin@test.com",
+        const authenticateUser = await request(app).post("/api/sessions").send({
+            email: "useradmin6@test.com",
             password: "userTest@!",
         });
 
         const { token } = authenticateUser.body;
 
         const createProduct = await request(app)
-            .post("/products")
+            .post("/api/products")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -57,15 +57,15 @@ describe("Create Product Controller", () => {
     });
 
     it("should not be able to create product with name already exists", async () => {
-        const authenticateUser = await request(app).post("/sessions").send({
-            email: "useradmin@test.com",
+        const authenticateUser = await request(app).post("/api/sessions").send({
+            email: "useradmin6@test.com",
             password: "userTest@!",
         });
 
         const { token } = authenticateUser.body;
 
         const createProduct1 = await request(app)
-            .post("/products")
+            .post("/api/products")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -76,7 +76,7 @@ describe("Create Product Controller", () => {
             .set({ Authorization: `Bearer ${token}` });
 
         const createProduct2 = await request(app)
-            .post("/products")
+            .post("/api/products")
             .send({
                 id: faker.datatype.uuid(),
                 name: createProduct1.body.name,
@@ -90,15 +90,15 @@ describe("Create Product Controller", () => {
     });
 
     it("should not be able to create product with quantity less than or equal to zero", async () => {
-        const authenticateUser = await request(app).post("/sessions").send({
-            email: "useradmin@test.com",
+        const authenticateUser = await request(app).post("/api/sessions").send({
+            email: "useradmin6@test.com",
             password: "userTest@!",
         });
 
         const { token } = authenticateUser.body;
 
         const createProduct = await request(app)
-            .post("/products")
+            .post("/api/products")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -112,15 +112,15 @@ describe("Create Product Controller", () => {
     });
 
     it("should not be able to create product with unit_price less than or equal to zero", async () => {
-        const authenticateUser = await request(app).post("/sessions").send({
-            email: "useradmin@test.com",
+        const authenticateUser = await request(app).post("/api/sessions").send({
+            email: "useradmin6@test.com",
             password: "userTest@!",
         });
 
         const { token } = authenticateUser.body;
 
         const createProduct = await request(app)
-            .post("/products")
+            .post("/api/products")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
