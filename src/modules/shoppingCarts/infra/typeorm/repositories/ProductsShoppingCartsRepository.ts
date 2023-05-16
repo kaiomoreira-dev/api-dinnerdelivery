@@ -16,8 +16,10 @@ export class ProductsShoppingCartsrtsRepository
         this.repository = dataSource.getRepository(ProductsShoppingCarts);
     }
 
-    async deleteById(id: string): Promise<void> {
+    async deleteById(id: string): Promise<boolean> {
         await this.repository.delete({ id });
+
+        return true;
     }
 
     async listProductsInShoppingCart(
