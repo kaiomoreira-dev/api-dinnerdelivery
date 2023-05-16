@@ -7,6 +7,6 @@ export interface IShoppingCartsRepository {
   create(data: ICreateShoppingCartsDTO): Promise<ShoppingCarts>;
   list(): Promise<ShoppingCarts[]>;
   findById(id: string): Promise<ShoppingCarts>;
-  updateById(id: string, subtotal?: number): Promise<void>;
-  deleteById(id: string): Promise<void>;
+  updateById(id: string, subtotal?: number): Promise<boolean>;
+  deleteById(id: string): Promise<boolean>;
 }
