@@ -69,15 +69,19 @@ export class ProductsRepository implements IProductsRepository {
         quantity,
         unit_price,
         product_img,
-    }: ICreateProductsDTO): Promise<void> {
+    }: ICreateProductsDTO): Promise<boolean> {
         await this.repository
             .createQueryBuilder()
             .update()
             .set({ name, description, quantity, unit_price, product_img })
             .where("id = :id", { id })
             .execute();
+
+        return true;
     }
-    async deleteById(id: string): Promise<void> {
+    async deleteById(id: string): Promise<boolean> {
         await this.repository.delete({ id });
+
+        return true;
     }
 }
