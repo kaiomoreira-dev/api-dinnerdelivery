@@ -6,7 +6,7 @@ export interface IProductsRepository {
   list(): Promise<Products[]>;
   findById(id: string): Promise<Products>;
   findByName(name: string): Promise<Products>;
-  updateById(date: ICreateProductsDTO): Promise<void>;
+  updateById(date: ICreateProductsDTO): Promise<boolean>;
 
-  deleteById(id: string): Promise<void>;
+  deleteById(id: string): Promise<boolean>;
 }
