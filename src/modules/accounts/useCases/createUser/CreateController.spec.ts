@@ -23,7 +23,7 @@ describe("Create User Controller", () => {
 
     it("should be able to create a user", async () => {
         const createUser = await request(app)
-            .post("/users")
+            .post("/api/users")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -37,7 +37,7 @@ describe("Create User Controller", () => {
 
     it("should not be able to create user with leght name less than 6 characters or equall zero", async () => {
         const createUser = await request(app)
-            .post("/users")
+            .post("/api/users")
             .send({
                 id: faker.datatype.uuid(),
                 name: "fake",
@@ -52,7 +52,7 @@ describe("Create User Controller", () => {
     it("should not be able to create user if email already exists", async () => {
         const emailTest = "test@email.com";
         const createUser1 = await request(app)
-            .post("/users")
+            .post("/api/users")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -62,7 +62,7 @@ describe("Create User Controller", () => {
             });
 
         const createUser2 = await request(app)
-            .post("/users")
+            .post("/api/users")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -76,7 +76,7 @@ describe("Create User Controller", () => {
 
     it("should not be able to create user with password less than lenght 6 characters or equall zero", async () => {
         const createUser = await request(app)
-            .post("/users")
+            .post("/api/users")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -90,7 +90,7 @@ describe("Create User Controller", () => {
 
     it("should not be able to create a user without address", async () => {
         const createUser = await request(app)
-            .post("/users")
+            .post("/api/users")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -104,7 +104,7 @@ describe("Create User Controller", () => {
 
     it("should not be able to create a user without email field empty", async () => {
         const createUser = await request(app)
-            .post("/users")
+            .post("/api/users")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
