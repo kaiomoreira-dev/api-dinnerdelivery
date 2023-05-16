@@ -18,8 +18,11 @@ import cors from "cors";
 
 import uploadConfig from "@config/uploadConfig";
 import { router } from "./routes";
+import rateLimiter from "./middlewares/rateLImiter";
 
 export const app = express();
+
+app.use(rateLimiter);
 
 app.use(express.json());
 
