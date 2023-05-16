@@ -16,6 +16,7 @@ export class ProductsRepositoryInMemory implements IProductsRepository {
     description,
     quantity,
     unit_price,
+    product_img,
   }: ICreateProductsDTO): Promise<Products> {
     const product = new Products();
 
@@ -27,6 +28,7 @@ export class ProductsRepositoryInMemory implements IProductsRepository {
       description,
       quantity,
       unit_price,
+      product_img,
     });
     this.repository.push(product);
 
@@ -38,25 +40,31 @@ export class ProductsRepositoryInMemory implements IProductsRepository {
   async findByName(name: string): Promise<Products> {
     return this.repository.find((product) => product.name === name);
   }
-  async updateById(
-    id: string,
-    name?: string,
-    description?: string,
-    quantity?: number,
-    unit_price?: number
-  ): Promise<void> {
+  async updateById({
+    id,
+    name,
+    description,
+    quantity,
+    unit_price,
+    product_img,
+  }: ICreateProductsDTO): Promise<boolean> {
     const productIndex = this.repository.findIndex((pro) => pro.id === id);
     this.repository[productIndex].name = name;
     this.repository[productIndex].description = description;
     this.repository[productIndex].quantity = quantity;
     this.repository[productIndex].unit_price = unit_price;
+    this.repository[productIndex].product_img = product_img;
+
+    return true;
   }
 
-  async deleteById(id: string): Promise<void> {
+  async deleteById(id: string): Promise<boolean> {
     const productIndex = this.repository.findIndex(
       (product) => product.id === id
     );
 
     this.repository.splice(productIndex, 1);
+
+    return true;
   }
 }
