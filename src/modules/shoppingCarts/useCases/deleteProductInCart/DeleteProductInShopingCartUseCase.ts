@@ -26,13 +26,13 @@ export class DeleteProductInShopingCartUseCase {
     async execute({
         id_products,
         id_shoppingCarts,
-    }: ICreateProductsShoppingCartsDTO): Promise<void> {
+    }: ICreateProductsShoppingCartsDTO): Promise<boolean> {
         const productsExists = await this.productsRepository.findById(
             id_products
         );
 
         if (!productsExists) {
-            throw new AppError("Product already exists", 404);
+            throw new AppError("Product not found", 404);
         }
 
         const shoppingCartExist = await this.shoppingCartsRepository.findById(
@@ -60,6 +60,11 @@ export class DeleteProductInShopingCartUseCase {
             subtotal
         );
 
-        await this.productsShoppingCartsRepository.deleteById(productInCart.id);
+        const deleteProduct =
+            await this.productsShoppingCartsRepository.deleteById(
+                productInCart.id
+            );
+
+        return deleteProduct;
     }
 }
