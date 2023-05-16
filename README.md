@@ -53,7 +53,7 @@ $ yarn build ou npm run build
 // desenvolvimento
 $ yarn start ou npm run dev
 
-// testes
+// tests
 $ yarn test ou npm run test
 
 # O servidor inciará na porta:3200 - acesse <http://localhost:3200>
