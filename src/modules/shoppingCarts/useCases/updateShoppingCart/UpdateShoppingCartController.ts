@@ -20,7 +20,7 @@ export class UpdateShoppingCartController {
         });
 
         return response
-            .status(200)
+            .status(204)
             .json({ message: "Update Shopping Cart Successfully!" });
     }
 }
