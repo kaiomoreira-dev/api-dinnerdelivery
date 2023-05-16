@@ -10,6 +10,16 @@ export class ShoppingCartsRepositoryInMemory
 {
   repository: ShoppingCarts[] = [];
 
+  async deleteById(id: string): Promise<boolean> {
+    const userIndex = this.repository.findIndex(
+      (shoppingCart) => shoppingCart.id === id
+    );
+
+    this.repository.splice(userIndex, 1);
+
+    return true;
+  }
+
   async create({
     id_users,
     products,
@@ -38,10 +48,12 @@ export class ShoppingCartsRepositoryInMemory
     return this.repository.find((shoppingCart) => shoppingCart.id === id);
   }
 
-  async updateById(id: string, subtotal?: number): Promise<void> {
+  async updateById(id: string, subtotal?: number): Promise<boolean> {
     const shoppingCartIndex = this.repository.findIndex(
       (shoppingCart) => shoppingCart.id === id
     );
     this.repository[shoppingCartIndex].subtotal = subtotal;
+
+    return true;
   }
 }
