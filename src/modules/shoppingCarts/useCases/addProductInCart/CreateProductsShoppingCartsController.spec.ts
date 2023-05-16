@@ -35,7 +35,7 @@ describe("Add product in cart Controller", () => {
     });
 
     it("should be able to add a product not exist in shopping cart anonymous", async () => {
-        const authenticateUser = await request(app).post("/sessions").send({
+        const authenticateUser = await request(app).post("/api/sessions").send({
             email: "useradmin@test.com",
             password: "userTest@!",
         });
@@ -43,7 +43,7 @@ describe("Add product in cart Controller", () => {
         const { token } = authenticateUser.body;
 
         const createProduct = await request(app)
-            .post("/products")
+            .post("/api/products")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -54,17 +54,18 @@ describe("Add product in cart Controller", () => {
             .set({ Authorization: `Bearer ${token}` });
 
         const { id } = createProduct.body;
+
         const quantity = 5;
 
         const addProductInCart = await request(app)
-            .post(`/shoppingCart/add-product/${id}/${quantity}/`)
+            .post(`/api/shoppingCarts/add-product/${id}/${quantity}/`)
             .send();
 
         expect(addProductInCart.status).toBe(200);
     });
 
     it("should be able to update a product already exist in shopping cart anonymous", async () => {
-        const authenticateUser = await request(app).post("/sessions").send({
+        const authenticateUser = await request(app).post("/api/sessions").send({
             email: "useradmin@test.com",
             password: "userTest@!",
         });
@@ -72,7 +73,7 @@ describe("Add product in cart Controller", () => {
         const { token } = authenticateUser.body;
 
         const createProduct = await request(app)
-            .post("/products")
+            .post("/api/products")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -83,23 +84,24 @@ describe("Add product in cart Controller", () => {
             .set({ Authorization: `Bearer ${token}` });
 
         const { id } = createProduct.body;
+
         const quantity = 5;
 
         const addProductInCart = await request(app)
-            .post(`/shoppingCart/add-product/${id}/${quantity}/`)
+            .post(`/api/shoppingCarts/add-product/${id}/${quantity}/`)
             .send();
 
         const { id: cartId } = addProductInCart.body.shoppingCart;
 
         const updateProductInCart = await request(app)
-            .post(`/shoppingCart/add-product/${id}/${quantity}/${cartId}`)
+            .post(`/api/shoppingCarts/add-product/${id}/${quantity}/${cartId}`)
             .send();
 
         expect(updateProductInCart.status).toBe(200);
     });
 
     it("should be able to update a product already exist in shopping cart with shoppingCart ID invalid anonymous", async () => {
-        const authenticateUser = await request(app).post("/sessions").send({
+        const authenticateUser = await request(app).post("/api/sessions").send({
             email: "useradmin@test.com",
             password: "userTest@!",
         });
@@ -107,7 +109,7 @@ describe("Add product in cart Controller", () => {
         const { token } = authenticateUser.body;
 
         const createProduct = await request(app)
-            .post("/products")
+            .post("/api/products")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -121,20 +123,20 @@ describe("Add product in cart Controller", () => {
         const quantity = 5;
 
         const addProductInCart = await request(app)
-            .post(`/shoppingCart/add-product/${id}/${quantity}/`)
+            .post(`/api/shoppingCarts/add-product/${id}/${quantity}/`)
             .send();
 
         const cartId = faker.datatype.uuid();
 
         const updateProductInCart = await request(app)
-            .post(`/shoppingCart/add-product/${id}/${quantity}/${cartId}`)
+            .post(`/api/shoppingCarts/add-product/${id}/${quantity}/${cartId}`)
             .send();
 
         expect(updateProductInCart.status).toBe(401);
     });
 
     it("should not be able to add a product to cart with invalid quantity", async () => {
-        const authenticateUser = await request(app).post("/sessions").send({
+        const authenticateUser = await request(app).post("/api/sessions").send({
             email: "useradmin@test.com",
             password: "userTest@!",
         });
@@ -142,7 +144,7 @@ describe("Add product in cart Controller", () => {
         const { token } = authenticateUser.body;
 
         const createProduct = await request(app)
-            .post("/products")
+            .post("/api/products")
             .send({
                 id: faker.datatype.uuid(),
                 name: faker.name.fullName(),
@@ -157,7 +159,7 @@ describe("Add product in cart Controller", () => {
         const quantity = 0;
 
         const addProductInCart = await request(app)
-            .post(`/shoppingCart/add-product/${id}/${quantity}/`)
+            .post(`/api/shoppingCarts/add-product/${id}/${quantity}/`)
             .send();
 
         expect(addProductInCart.status).toBe(401);
@@ -168,7 +170,7 @@ describe("Add product in cart Controller", () => {
         const quantity = 5;
 
         const addProductInCart = await request(app)
-            .post(`/shoppingCart/add-product/${id}/${quantity}/`)
+            .post(`/api/shoppingCarts/add-product/${id}/${quantity}/`)
             .send();
 
         expect(addProductInCart.status).toBe(404);
