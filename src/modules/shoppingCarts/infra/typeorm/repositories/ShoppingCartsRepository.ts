@@ -14,8 +14,10 @@ export class ShoppingCartsRepository implements IShoppingCartsRepository {
         this.repository = dataSource.getRepository(ShoppingCarts);
     }
 
-    async deleteById(id: string): Promise<void> {
+    async deleteById(id: string): Promise<boolean> {
         await this.repository.delete({ id });
+
+        return true;
     }
 
     async create({
@@ -53,12 +55,14 @@ export class ShoppingCartsRepository implements IShoppingCartsRepository {
         return shoppingCart;
     }
 
-    async updateById(id: string, subtotal?: number): Promise<void> {
+    async updateById(id: string, subtotal?: number): Promise<boolean> {
         await this.repository
             .createQueryBuilder()
             .update()
             .set({ subtotal })
             .where("id = :id", { id })
             .execute();
+
+        return true;
     }
 }
