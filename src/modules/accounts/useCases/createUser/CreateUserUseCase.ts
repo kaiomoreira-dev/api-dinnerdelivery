@@ -21,7 +21,7 @@ export class CreateUserUseCase {
         address,
         admin,
     }: ICreateUserDTO): Promise<Users> {
-        if (password.length < 6 || password.length === 0) {
+        if (password.length < 6) {
             throw new AppError("Password low lenght", 401);
         }
 
@@ -43,7 +43,7 @@ export class CreateUserUseCase {
             throw new AppError("Email already exists", 401);
         }
 
-        if (name.length < 6 || name.length === 0) {
+        if (name.length < 6) {
             throw new AppError("Name is not available", 401);
         }
 
