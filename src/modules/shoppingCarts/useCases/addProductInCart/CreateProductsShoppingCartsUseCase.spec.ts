@@ -1,25 +1,14 @@
 import { faker } from "@faker-js/faker";
-import { ICreateUserDTO } from "@modules/accounts/dtos/CreateUserDTO";
-import { RefreshTokensRepositoryInMemory } from "@modules/accounts/repositories/in-memory/RefreshTokensRepositoryInMemory";
-import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersRepositoryInMemory";
-import { AuthenticateUserUseCase } from "@modules/accounts/useCases/authenticateUser/AuthenticateUserUseCase";
-import { CreateUserUseCase } from "@modules/accounts/useCases/createUser/CreateUserUseCase";
 import { ICreateProductsDTO } from "@modules/products/dtos/ICreateProductsDTO";
 import { ProductsRepositoryInMemory } from "@modules/products/repositories/in-memory/ProductsRepositoryInMemory";
 import { CreateProductsUseCase } from "@modules/products/useCases/createProduct/CreateProductsUseCase";
 import { ProductsShoppingCartsRepositoryInMemory } from "@modules/shoppingCarts/repositories/in-memory/ProductsShoppingCartsRepositoryInMemory";
 import { ShoppingCartsRepositoryInMemory } from "@modules/shoppingCarts/repositories/in-memory/ShoppingCartsRepositoryInMemory";
 
-import { DayjsDateProvider } from "@shared/container/providers/DateProvider/implementations/DayjsDateProvider";
 import { AppError } from "@shared/errors/AppError";
 
 import { CreateProductsShoppingCartsUseCase } from "./CreateProductsShoppingCartsUseCase";
 
-let usersRepositoryInMemory: UsersRepositoryInMemory;
-let createUserUseCase: CreateUserUseCase;
-let authenticateUserUseCase: AuthenticateUserUseCase;
-let dayjsDateProvider: DayjsDateProvider;
-let refreshTokensRepositoryInMemory: RefreshTokensRepositoryInMemory;
 let productsRepositoryInMemory: ProductsRepositoryInMemory;
 let createProductsUseCase: CreateProductsUseCase;
 let shoppingCartsRepositoryInMemory: ShoppingCartsRepositoryInMemory;
@@ -28,20 +17,9 @@ let createProductsShoppingCartsUseCase: CreateProductsShoppingCartsUseCase;
 
 describe("Add product in cart UseCase", () => {
     beforeEach(() => {
-        usersRepositoryInMemory = new UsersRepositoryInMemory();
         productsRepositoryInMemory = new ProductsRepositoryInMemory();
-        createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory);
-        dayjsDateProvider = new DayjsDateProvider();
-        refreshTokensRepositoryInMemory = new RefreshTokensRepositoryInMemory();
-
-        authenticateUserUseCase = new AuthenticateUserUseCase(
-            usersRepositoryInMemory,
-            refreshTokensRepositoryInMemory,
-            dayjsDateProvider
-        );
         createProductsUseCase = new CreateProductsUseCase(
-            productsRepositoryInMemory,
-            usersRepositoryInMemory
+            productsRepositoryInMemory
         );
         shoppingCartsRepositoryInMemory = new ShoppingCartsRepositoryInMemory();
         productsShoppingCartsRepositoryInMemory =
@@ -57,24 +35,7 @@ describe("Add product in cart UseCase", () => {
             );
     });
 
-    it("should be able to add a product in shoppingCart anonymous", async () => {
-        const user: ICreateUserDTO = {
-            name: faker.name.fullName(),
-            email: faker.internet.email(),
-            password: faker.datatype.string(8),
-            address: faker.address.streetAddress(),
-            admin: true,
-        };
-
-        // Create a userr
-        const createdUser = await createUserUseCase.execute(user);
-
-        // Authenticate a user
-        await authenticateUserUseCase.execute({
-            email: user.email,
-            password: user.password,
-        });
-
+    it("should be able to add a product in shoppingCart for any user anonymous", async () => {
         const product: ICreateProductsDTO = {
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
@@ -82,10 +43,7 @@ describe("Add product in cart UseCase", () => {
             unit_price: 10,
         };
 
-        const createdProduct = await createProductsUseCase.execute(
-            product,
-            createdUser.id
-        );
+        const createdProduct = await createProductsUseCase.execute(product);
 
         const addProductInCart =
             await createProductsShoppingCartsUseCase.execute({
@@ -99,25 +57,7 @@ describe("Add product in cart UseCase", () => {
         expect(addProductInCart.shoppingCart.products[0]).toHaveProperty("id");
     });
 
-    it("should be able to update a product already exist in shopping cart anonymous", async () => {
-        const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
-            name: faker.name.fullName(),
-            email: faker.internet.email(),
-            password: faker.datatype.string(8),
-            address: faker.address.streetAddress(),
-            admin: true,
-        };
-
-        // Create a user
-        const createdUser = await createUserUseCase.execute(user);
-
-        // Authenticate a user
-        await authenticateUserUseCase.execute({
-            email: user.email,
-            password: user.password,
-        });
-
+    it("should be able to update a product already exist in shopping cart for the same user anonymous", async () => {
         const product: ICreateProductsDTO = {
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
@@ -125,10 +65,7 @@ describe("Add product in cart UseCase", () => {
             unit_price: 10,
         };
 
-        const createdProduct = await createProductsUseCase.execute(
-            product,
-            createdUser.id
-        );
+        const createdProduct = await createProductsUseCase.execute(product);
 
         // create produto in cart
         const shoppingCart = await createProductsShoppingCartsUseCase.execute({
@@ -149,25 +86,43 @@ describe("Add product in cart UseCase", () => {
         );
     });
 
-    it("should be able to update a product already exist in shopping cart with shoppingCart ID invalid anonymous", async () => {
-        const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
+    it("should be able to create a new product in shopping cart already exist with others products for the same user anonymous", async () => {
+        const product1: ICreateProductsDTO = {
             name: faker.name.fullName(),
-            email: faker.internet.email(),
-            password: faker.datatype.string(8),
-            address: faker.address.streetAddress(),
-            admin: true,
+            description: faker.commerce.productDescription(),
+            quantity: Number(faker.random.numeric()),
+            unit_price: 10,
         };
 
-        // Create a user
-        const createdUser = await createUserUseCase.execute(user);
+        const product2: ICreateProductsDTO = {
+            name: faker.name.fullName(),
+            description: faker.commerce.productDescription(),
+            quantity: Number(faker.random.numeric()),
+            unit_price: 10,
+        };
 
-        // Authenticate a user
-        await authenticateUserUseCase.execute({
-            email: user.email,
-            password: user.password,
-        });
+        const createdProduct1 = await createProductsUseCase.execute(product1);
+        const createdProduct2 = await createProductsUseCase.execute(product2);
+        // create produto in cart
+        const createProduct1InCar =
+            await createProductsShoppingCartsUseCase.execute({
+                id_products: createdProduct1.id,
+                quantity: 6,
+            });
 
+        const createProduct2InCar =
+            await createProductsShoppingCartsUseCase.execute({
+                id_products: createdProduct2.id,
+                quantity: 4,
+                id_shoppingCarts: createProduct1InCar.shoppingCart.id,
+            });
+
+        // console.log(JSON.stringify(createProduct2InCar, null, 2));
+
+        expect(createProduct2InCar.shoppingCart.products.length).toBe(2);
+    });
+
+    it("should be able to update a product already exist in shopping cart with shoppingCart ID invalid anonymous", async () => {
         const product: ICreateProductsDTO = {
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
@@ -175,10 +130,7 @@ describe("Add product in cart UseCase", () => {
             unit_price: 10,
         };
 
-        const createdProduct = await createProductsUseCase.execute(
-            product,
-            createdUser.id
-        );
+        const createdProduct = await createProductsUseCase.execute(product);
 
         // update produto in cart
         await expect(
@@ -191,24 +143,6 @@ describe("Add product in cart UseCase", () => {
     });
 
     it("should not be able to add a product to cart with invalid quantity", async () => {
-        const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
-            name: faker.name.fullName(),
-            email: faker.internet.email(),
-            password: faker.datatype.string(8),
-            address: faker.address.streetAddress(),
-            admin: true,
-        };
-
-        // Create a user
-        const createdUser = await createUserUseCase.execute(user);
-
-        // Authenticate a user
-        await authenticateUserUseCase.execute({
-            email: user.email,
-            password: user.password,
-        });
-
         const product: ICreateProductsDTO = {
             name: faker.name.fullName(),
             description: faker.commerce.productDescription(),
@@ -216,10 +150,7 @@ describe("Add product in cart UseCase", () => {
             unit_price: 10,
         };
 
-        const createdProduct = await createProductsUseCase.execute(
-            product,
-            createdUser.id
-        );
+        const createdProduct = await createProductsUseCase.execute(product);
 
         const createdCart = await shoppingCartsRepositoryInMemory.create({
             id_users: null,
@@ -237,24 +168,6 @@ describe("Add product in cart UseCase", () => {
     });
 
     it("should not be able to add a product to cart with id product invalid", async () => {
-        const user: ICreateUserDTO = {
-            id: faker.datatype.uuid(),
-            name: faker.name.fullName(),
-            email: faker.internet.email(),
-            password: faker.datatype.string(8),
-            address: faker.address.streetAddress(),
-            admin: true,
-        };
-
-        // Create a user
-        await createUserUseCase.execute(user);
-
-        // Authenticate a user
-        await authenticateUserUseCase.execute({
-            email: user.email,
-            password: user.password,
-        });
-
         const createdCart = await shoppingCartsRepositoryInMemory.create({
             id_users: null,
             subtotal: 0,
