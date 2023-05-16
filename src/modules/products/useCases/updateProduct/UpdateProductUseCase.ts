@@ -10,21 +10,16 @@ import { AppError } from "@shared/errors/AppError";
 export class UpdateProductUseCase {
     constructor(
         @inject("ProductsRepository")
-        private productsRepository: IProductsRepository,
-        @inject("UsersRepository")
-        private userRepository: IUsersRepository
+        private productsRepository: IProductsRepository
     ) {}
 
-    async execute(
-        { id, name, description, quantity, unit_price }: ICreateProductsDTO,
-        id_users: string
-    ): Promise<Products> {
-        const userAuthorized = await this.userRepository.findById(id_users);
-
-        if (!userAuthorized) {
-            throw new AppError("User not authorized to create products", 401);
-        }
-
+    async execute({
+        id,
+        name,
+        description,
+        quantity,
+        unit_price,
+    }: ICreateProductsDTO): Promise<Products> {
         const productsExists = await this.productsRepository.findById(id);
 
         if (!productsExists) {
