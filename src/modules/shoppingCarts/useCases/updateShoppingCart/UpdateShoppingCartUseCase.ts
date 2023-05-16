@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
@@ -26,7 +27,7 @@ export class UpdateShoppingCartUseCase {
         id_shoppingCarts,
         id_products,
         quantity,
-    }: ICreateProductsShoppingCartsDTO): Promise<void> {
+    }: ICreateProductsShoppingCartsDTO): Promise<boolean> {
         const shoppingCartExist = await this.shoppingCartsRepository.findById(
             id_shoppingCarts
         );
@@ -80,7 +81,7 @@ export class UpdateShoppingCartUseCase {
                 findProductInShoppingCart.id
             );
 
-            return;
+            return true;
         }
 
         if (quantity === 0 && listProductsInCart.length === 1) {
@@ -90,7 +91,7 @@ export class UpdateShoppingCartUseCase {
 
             await this.shoppingCartsRepository.deleteById(shoppingCartExist.id);
 
-            return;
+            return true;
         }
 
         await this.productsShoppingCartsRepository.updateById({
@@ -105,9 +106,11 @@ export class UpdateShoppingCartUseCase {
 
         const subtotal = calcSubtotal + priceProductInCart;
 
-        await this.shoppingCartsRepository.updateById(
+        const updateProduct = await this.shoppingCartsRepository.updateById(
             shoppingCartExist.id,
             subtotal
         );
+
+        return updateProduct;
     }
 }
