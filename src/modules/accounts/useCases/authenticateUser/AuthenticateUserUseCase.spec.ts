@@ -69,7 +69,26 @@ describe("Authenticate User UseCase", () => {
 
         await expect(
             authenticateUserUseCase.execute({
-                email: "wrongEmail",
+                email: "fake@email.com",
+                password: user.password,
+            })
+        ).rejects.toEqual(new AppError("Email or password incorrect", 401));
+    });
+
+    it("should be able to authenticate user with email toEqual null", async () => {
+        const user: ICreateUserDTO = {
+            name: faker.name.fullName(),
+            email: faker.internet.email(),
+            password: faker.datatype.string(8),
+            address: faker.address.streetAddress(),
+        };
+
+        // Create a user
+        await createUserUseCase.execute(user);
+
+        await expect(
+            authenticateUserUseCase.execute({
+                email: null,
                 password: user.password,
             })
         ).rejects.toEqual(new AppError("Email or password incorrect", 401));
@@ -89,7 +108,27 @@ describe("Authenticate User UseCase", () => {
         await expect(
             authenticateUserUseCase.execute({
                 email: user.email,
-                password: "passerror",
+                password:
+                    "$2b$08$hR1yxPMop6J2/i82m2iR7./RaUx5cVqAJGoitw4oYM0bUfj89DCfa",
+            })
+        ).rejects.toEqual(new AppError("Email or password incorrect", 401));
+    });
+
+    it("should be able to authenticate user with password toEqual null", async () => {
+        const user: ICreateUserDTO = {
+            name: faker.name.fullName(),
+            email: faker.internet.email(),
+            password: faker.datatype.string(8),
+            address: faker.address.streetAddress(),
+        };
+
+        // Create a user
+        await createUserUseCase.execute(user);
+
+        await expect(
+            authenticateUserUseCase.execute({
+                email: user.email,
+                password: null,
             })
         ).rejects.toEqual(new AppError("Email or password incorrect", 401));
     });
