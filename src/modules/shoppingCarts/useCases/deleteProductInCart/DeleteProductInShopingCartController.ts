@@ -17,7 +17,7 @@ export class DeleteProductInShopingCartController {
         });
 
         return response
-            .status(200)
+            .status(204)
             .json({ message: "Product in shoppingCart deleted successfully" });
     }
 }
