@@ -70,7 +70,7 @@ describe("Create User UseCase", () => {
         );
     });
 
-    it("should not be able to create user with password less than lenght 6 characters or equall zero", async () => {
+    it("should not be able to create user with password less than lenght 6 characters", async () => {
         const user: ICreateUserDTO = {
             name: faker.name.fullName(),
             email: faker.internet.email(),
@@ -95,6 +95,7 @@ describe("Create User UseCase", () => {
             new AppError("Address is required", 401)
         );
     });
+
     it("should not be able to create a user without email field empty", async () => {
         const user: ICreateUserDTO = {
             name: faker.datatype.string(4),
