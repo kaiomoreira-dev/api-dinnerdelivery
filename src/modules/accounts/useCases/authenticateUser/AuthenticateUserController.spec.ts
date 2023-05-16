@@ -30,9 +30,9 @@ describe("Authenticate User Controller", () => {
             password: faker.internet.password(10),
             address: faker.address.streetAddress(),
         };
-        await request(app).post("/users").send(user);
+        await request(app).post("/api/users").send(user);
 
-        const authenticateUser = await request(app).post("/sessions").send({
+        const authenticateUser = await request(app).post("/api/sessions").send({
             email: user.email,
             password: user.password,
         });
@@ -48,9 +48,9 @@ describe("Authenticate User Controller", () => {
             password: faker.internet.password(10),
             address: faker.address.streetAddress(),
         };
-        await request(app).post("/users").send(user);
+        await request(app).post("/api/users").send(user);
 
-        const authenticateUser = await request(app).post("/sessions").send({
+        const authenticateUser = await request(app).post("/api/sessions").send({
             email: user.email,
             password: "fakepass",
         });
@@ -66,9 +66,9 @@ describe("Authenticate User Controller", () => {
             password: faker.internet.password(10),
             address: faker.address.streetAddress(),
         };
-        await request(app).post("/users").send(user);
+        await request(app).post("/api/users").send(user);
 
-        const authenticateUser = await request(app).post("/sessions").send({
+        const authenticateUser = await request(app).post("/api/sessions").send({
             email: "fakeEmail",
             password: user.password,
         });
