@@ -66,27 +66,11 @@ describe("Refresh token UseCase", () => {
         expect(updatedToken).toHaveProperty("token");
     });
     it("should not be able to create a refresh token with refresh token invalid", async () => {
-        const user: ICreateUserDTO = {
-            name: faker.name.fullName(),
-            email: faker.internet.email(),
-            password: faker.datatype.string(8),
-            address: faker.address.streetAddress(),
-        };
-
-        // Create a user
-        const createdUser = await createUserUseCase.execute(user);
-
-        // Authenticate a user
-        await authenticateUserUseCase.execute({
-            email: createdUser.email,
-            password: user.password,
-        });
-        //
-
-        const fakeToken = ``;
+        const fakeToken =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJrZW5zYW50QHRlc3QuY29tIiwiaWF0IjoxNjgzODMzMTA5LCJleHAiOjE2ODQ0Mzc5MDksInN1YiI6IjA5MDdjMDYzLTc3Y2QtNDdkYi1hZmE1LWE0M2JjZTNhY2IzZCJ9.ykN75GR3R0Y0kAehhnP4rkYOXXckQp5jkw7BVRgABmw";
 
         await expect(refreshTokenUseCase.execute(fakeToken)).rejects.toEqual(
-            new AppError("Token not valid", 401)
+            new AppError("Refresh token not found", 404)
         );
     });
 });
