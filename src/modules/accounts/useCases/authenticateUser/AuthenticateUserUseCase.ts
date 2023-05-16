@@ -37,9 +37,17 @@ export class AuthenticateUserUseCase {
     ) {}
 
     async execute({ email, password }: IRequest): Promise<IResponse> {
+        if (!email) {
+            throw new AppError("Email or password incorrect", 401);
+        }
+
         const userExists = await this.userRepository.findByEmail(email);
 
         if (!userExists) {
+            throw new AppError("Email or password incorrect", 401);
+        }
+
+        if (!password) {
             throw new AppError("Email or password incorrect", 401);
         }
 
