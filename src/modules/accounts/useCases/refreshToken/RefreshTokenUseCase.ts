@@ -26,52 +26,47 @@ export class RefreshTokenUseCase {
     ) {}
 
     async execute(token: string): Promise<ITokenResponse> {
-        try {
-            const { sub, email } = verify(
-                token,
-                auth.secret_refresh_token
-            ) as IPayload;
+        const { sub, email } = verify(
+            token,
+            auth.secret_refresh_token
+        ) as IPayload;
 
-            const user_id = sub;
+        const user_id = sub;
 
-            const userToken =
-                await this.refreshTokensRepository.findRefreshTokenByUserIdAndRefreshToken(
-                    user_id,
-                    token
-                );
-
-            if (!userToken) {
-                throw new AppError("Refresh token not found");
-            }
-
-            await this.refreshTokensRepository.deleteById(userToken.id);
-
-            const refresh_token = sign({ email }, auth.secret_refresh_token, {
-                subject: user_id,
-                expiresIn: auth.expire_refresh_token,
-            });
-
-            const expire_date_refresh_token = this.daysjsDateProvider.addDays(
-                auth.days_refresh_token
+        const userToken =
+            await this.refreshTokensRepository.findRefreshTokenByUserIdAndRefreshToken(
+                user_id,
+                token
             );
-
-            await this.refreshTokensRepository.create({
-                id_users: user_id,
-                refresh_token,
-                expire_date: expire_date_refresh_token,
-            });
-
-            const newToken = sign({}, auth.secret_token, {
-                subject: user_id,
-                expiresIn: auth.expire_in_token,
-            });
-
-            return {
-                refresh_token,
-                token: newToken,
-            };
-        } catch (error) {
-            throw new AppError("Token not valid", 401);
+        if (!userToken) {
+            throw new AppError("Refresh token not found", 404);
         }
+
+        await this.refreshTokensRepository.deleteById(userToken.id);
+
+        const refresh_token = sign({ email }, auth.secret_refresh_token, {
+            subject: user_id,
+            expiresIn: auth.expire_refresh_token,
+        });
+
+        const expire_date_refresh_token = this.daysjsDateProvider.addDays(
+            auth.days_refresh_token
+        );
+
+        await this.refreshTokensRepository.create({
+            id_users: user_id,
+            refresh_token,
+            expire_date: expire_date_refresh_token,
+        });
+
+        const newToken = sign({}, auth.secret_token, {
+            subject: user_id,
+            expiresIn: auth.expire_in_token,
+        });
+
+        return {
+            refresh_token,
+            token: newToken,
+        };
     }
 }
