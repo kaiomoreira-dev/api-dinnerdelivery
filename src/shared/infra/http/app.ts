@@ -22,7 +22,7 @@ import rateLimiter from "./middlewares/rateLImiter";
 
 export const app = express();
 
-app.use(rateLimiter);
+// app.use(rateLimiter);
 
 app.use(express.json());
 

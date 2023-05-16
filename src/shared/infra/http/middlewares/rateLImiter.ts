@@ -9,8 +9,8 @@ import { AppError } from "@shared/errors/AppError";
 const limiter = new RateLimiterRedis({
   storeClient: redisClient,
   keyPrefix: "rateLimiter",
-  points: 8, // 10 requests
-  duration: 5, // per 1 second by IP
+  points: 10, // 10 requests
+  duration: 1, // per 1 second by IP
 });
 
 export default async function rateLimiter(
