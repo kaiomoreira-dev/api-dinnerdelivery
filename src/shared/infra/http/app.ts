@@ -22,7 +22,8 @@ import rateLimiter from "./middlewares/rateLImiter";
 
 export const app = express();
 
-// app.use(rateLimiter);
+const ensureRateLimiter =
+  process.env.NODE_ENV !== "test" ? app.use(rateLimiter) : null;
 
 app.use(express.json());
 
