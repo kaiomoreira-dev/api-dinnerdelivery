@@ -17,8 +17,9 @@ const dataSource = new DataSource({
   port: 5432,
   username: JSON.parse(process.env.POSTGRESQL_USERNAME),
   password: JSON.parse(process.env.POSTGRESQL_PASSWORD),
+  host: JSON.parse(process.env.POSTGRESQL_HOST),
   database:
-    process.env.NODE_ENV === "test" ? "dinnerdelivery_test" : "dinnerDelivery",
+    process.env.NODE_ENV === "test" ? "dinnerdelivery_test" : "verceldb",
 
   // importar entidades ex: [Recipes]
   entities: [
