@@ -12,7 +12,7 @@
     "migration:create": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:create",
     "migration:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d src/shared/infra/typeorm/index.ts",
     "migration:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:revert -d src/shared/infra/typeorm/index.ts",
-    "start:prod": "node dist/server.js",
+    "start:prod": "node dist/shared/infra/http/server.js",
     "test": "export set NODE_OPTIONS=--max_old_space_size=16192 && NODE_ENV=test jest --runInBand --verbose --useStderr --forceExit",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "seed": "ts-node-dev -r tsconfig-paths/register src/shared/infra/typeorm/seed/admin.ts"
