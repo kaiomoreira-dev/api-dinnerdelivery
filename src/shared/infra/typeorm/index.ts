@@ -15,7 +15,7 @@ import { CreateProductsShoppingCarts1682689664277 } from "./migrations/168268966
 const dataSource = new DataSource({
   type: "postgres",
   port: 1999,
-  username: JSON.parse(process.env.POSTGRESQL_USERNSME),
+  username: JSON.parse(process.env.POSTGRESQL_USERNAME),
   password: JSON.parse(process.env.POSTGRESQL_PASSWORD),
   database:
     process.env.NODE_ENV === "test" ? "dinnerdelivery_test" : "dinnerDelivery",
