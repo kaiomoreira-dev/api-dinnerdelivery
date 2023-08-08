@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { ICreateUserDTO } from "@modules/accounts/dtos/CreateUserDTO";
 import { Users } from "@modules/accounts/infra/typeorm/entities/Users";
+import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { hash } from "bcrypt";
 import { inject, injectable } from "tsyringe";
@@ -32,7 +33,7 @@ export class CreateUserUseCase {
             throw new AppError("Email not valid", 401);
         }
 
-        const checkEmailUserExist = await this.userRepository.findByEmail(
+        const checkEmailUserExist = await this.usersRepository.findByEmail(
             email
         );
 
@@ -40,11 +41,7 @@ export class CreateUserUseCase {
             throw new AppError("Email already exists", 401);
         }
 
-        if (name.length < 6) {
-            throw new AppError("Name is not available", 401);
-        }
-
-        const user = await this.userRepository.create({
+        const user = await this.usersRepository.create({
             name,
             email,
             password: passwordHash,
