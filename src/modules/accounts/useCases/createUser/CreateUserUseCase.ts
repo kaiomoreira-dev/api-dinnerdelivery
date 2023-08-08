@@ -9,10 +9,7 @@ import { AppError } from "@shared/errors/AppError";
 
 @injectable()
 export class CreateUserUseCase {
-    constructor(
-        @inject("UsersRepository")
-        private userRepository: IUsersRepository
-    ) {}
+    constructor(private readonly usersRepository: UsersRepository) {}
 
     async execute({
         name,

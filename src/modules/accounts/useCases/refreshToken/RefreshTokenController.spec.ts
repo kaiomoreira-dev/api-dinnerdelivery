@@ -65,9 +65,9 @@ describe("Refresh token Controller", () => {
         const refreshToken = await request(app)
             .post("/api/refresh-token")
             .send({
-                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJrZW5zYW50QHRlc3QuY29tIiwiaWF0IjoxNjgzODMzMTA5LCJleHAiOjE2ODQ0Mzc5MDksInN1YiI6IjA5MDdjMDYzLTc3Y2QtNDdkYi1hZmE1LWE0M2JjZTNhY2IzZCJ9.ykN75GR3R0Y0kAehhnP4rkYOXXckQp5jkw7BVRgABmw",
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJlbWFpbEB0ZXN0ZS5jb20iLCJpYXQiOjE2ODUwNjA2NTksImV4cCI6MTY4NTY2NTQ1OSwic3ViIjoiNjFkMGU1N2ItOTYxZC00ZDY5LTk5MTAtZjZlMGUxNTI0YzcyIn0.thUukeDwSnKkEUuO-WaD2SH4gwqhy0s4_B0rLlEIbro",
             });
-
+        console.log(refreshToken.error);
         expect(refreshToken.status).toBe(404);
     });
 });

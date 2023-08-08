@@ -15,18 +15,10 @@ services:
         - pgdata:/data/postgres
 
         - ./src/shared/infra/typeorm/sql/create_base_test.sql:/docker-entrypoint-initdb.d/create_tables.sql
-        
-    redis:
-        image: redis:alpine
-        container_name: redis
-        ports: 
-            - 6379:6379
-        volumes:
-            - redis:/data
+
 volumes:
   pgdata:
     driver: local
-  redis:
-    driver: local
+
 
   

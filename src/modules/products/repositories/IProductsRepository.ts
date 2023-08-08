@@ -7,6 +7,5 @@ export interface IProductsRepository {
   findById(id: string): Promise<Products>;
   findByName(name: string): Promise<Products>;
   updateById(date: ICreateProductsDTO): Promise<boolean>;
-
   deleteById(id: string): Promise<boolean>;
 }
