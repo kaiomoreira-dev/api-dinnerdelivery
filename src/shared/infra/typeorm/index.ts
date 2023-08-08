@@ -20,6 +20,9 @@ const dataSource = new DataSource({
   host: JSON.parse(process.env.POSTGRESQL_HOST),
   database:
     process.env.NODE_ENV === "test" ? "dinnerdelivery_test" : "verceldb",
+  ssl: {
+    rejectUnauthorized: false
+  },
 
   // importar entidades ex: [Recipes]
   entities: [
